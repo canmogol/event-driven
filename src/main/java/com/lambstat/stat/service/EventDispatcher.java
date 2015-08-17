@@ -3,15 +3,17 @@ package com.lambstat.stat.service;
 import com.lambstat.module.camera.service.CameraService;
 import com.lambstat.module.disc.service.DiscService;
 import com.lambstat.stat.event.*;
-import io.netty.util.internal.ConcurrentSet;
+import com.lambstat.stat.remote.ZMQService;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EventDispatcher extends AbstractService {
 
     private Map<Class<? extends Event>, Set<Service>> eventServiceMap = new ConcurrentHashMap<>();
-    private Set<Service> services = new ConcurrentSet<>();
+    private Set<Service> services = new HashSet<>();
     private HashSet<Class<? extends Service>> serviceClasses;
 
     public EventDispatcher() {
@@ -36,6 +38,7 @@ public class EventDispatcher extends AbstractService {
         serviceClasses = new HashSet<Class<? extends Service>>() {{
             add(CameraService.class);
             add(DiscService.class);
+            add(ZMQService.class);
         }};
     }
 
@@ -47,7 +50,7 @@ public class EventDispatcher extends AbstractService {
                 Set<Class<? extends Event>> eventsToListen = service.getEventsToListen();
                 for (Class<? extends Event> eventClass : eventsToListen) {
                     if (!eventServiceMap.containsKey(eventClass)) {
-                        Set<Service> serviceSet = new ConcurrentSet<>();
+                        Set<Service> serviceSet = new HashSet<>();
                         serviceSet.add(service);
                         eventServiceMap.put(eventClass, serviceSet);
                     } else {
@@ -100,7 +103,7 @@ public class EventDispatcher extends AbstractService {
         // add this service for each of the event types
         for (Class<? extends Event> eventClass : event.getEvents()) {
             if (!eventServiceMap.containsKey(eventClass)) {
-                Set<Service> serviceSet = new ConcurrentSet<>();
+                Set<Service> serviceSet = new HashSet<>();
                 serviceSet.add(event.getService());
                 eventServiceMap.put(eventClass, serviceSet);
             } else {
