@@ -2,28 +2,50 @@ package com.lambstat.stat.service;
 
 
 import com.lambstat.stat.event.Event;
+import com.lambstat.stat.event.ShutdownEvent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
-public abstract class AbstractService<E extends Event> implements Service<E> {
+public abstract class AbstractService implements Service {
 
     private Logger L = Logger.getLogger(getClass().getSimpleName());
+    private Set<Class<? extends Event>> eventsToListen = new HashSet<Class<? extends Event>>() {{
+        add(ShutdownEvent.class);
+    }};
+    private BlockingQueue<Event> queue = new LinkedBlockingQueue<>();
+    private Service broadcastService;
+    private boolean running = true;
 
-    private BlockingQueue<E> queue = new LinkedBlockingQueue<E>();
-    private Service<Event> broadcastService;
+    public void handleEvent(Event event) {
+        log("Generic Event, will do nothing, event: " + event);
+    }
 
-    protected abstract void handleEvent(Event event);
+    @Override
+    public Set<Class<? extends Event>> eventsToListen() {
+        return eventsToListen;
+    }
+
+    public void registerEvents(Set<Class<? extends Event>> events) {
+        eventsToListen().addAll(events);
+    }
+
+    @Override
+    public void unregisterEvents(Set<Class<? extends Event>> events) {
+        eventsToListen().removeAll(events);
+    }
 
     public void broadcast(Event event) {
         broadcastService.notify(event);
     }
 
     @Override
-    public void notify(E event) {
+    public void notify(Event event) {
         try {
             queue.put(event);
         } catch (InterruptedException e) {
@@ -32,17 +54,21 @@ public abstract class AbstractService<E extends Event> implements Service<E> {
     }
 
     @Override
-    public void setBroadcastService(Service<Event> service) {
+    public void setBroadcastService(Service service) {
         this.broadcastService = service;
     }
 
     @Override
     public void run() {
-        while (true) {
+        while (running) {
             try {
-                E event = queue.take();
+                Event event = queue.take();
+                if (!running) {
+                    // current event will be discarded
+                    break;
+                }
                 try {
-                    Method method = this.getClass().getDeclaredMethod("handleEvent", event.getClass());
+                    Method method = this.getClass().getMethod("handleEvent", event.getClass());
                     if (!method.isAccessible()) {
                         method.setAccessible(true);
                     }
@@ -53,15 +79,21 @@ public abstract class AbstractService<E extends Event> implements Service<E> {
                     handleEvent(event);
                 }
             } catch (InterruptedException e) {
+                // interrupted, doing down
                 e.printStackTrace();
                 break;
             }
         }
+        log("shutdown");
+    }
+
+    public void handleEvent(ShutdownEvent event) {
+        log("Shutdown Event, will shutdown this service, event: " + event);
+        running = false;// will break the loop at while or if condition
     }
 
     public void log(String log) {
-        L.info(Thread.currentThread().getId() + " " + log);
+        L.info(Thread.currentThread().getId() + " [" + getClass().getSimpleName() + "] " + log);
     }
-
 
 }

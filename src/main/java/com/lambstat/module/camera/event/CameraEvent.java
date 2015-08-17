@@ -1,4 +1,4 @@
-package com.lambstat.camera.event;
+package com.lambstat.module.camera.event;
 
 import com.lambstat.stat.event.Event;
 

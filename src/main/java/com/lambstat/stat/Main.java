@@ -1,15 +1,15 @@
 package com.lambstat.stat;
 
-import com.lambstat.stat.event.Event;
-import com.lambstat.stat.service.StatService;
+import com.lambstat.stat.service.EventDispatcher;
 
 public class Main {
 
     public static void main(String[] args) {
-        StatService<Event> statService = new StatService<Event>();
-        new Thread(statService).start();
+        EventDispatcher eventDispatcher = new EventDispatcher();
+        new Thread(eventDispatcher).start();
 
-        new Thread(new EventProducerTester(statService)).start();
+        // EventProducerTester mimics execution, just for testing purposes
+        new Thread(new EventProducerTester(eventDispatcher)).start();
     }
 
 }
