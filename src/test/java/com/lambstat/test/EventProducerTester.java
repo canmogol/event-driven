@@ -39,7 +39,7 @@ public class EventProducerTester implements Runnable {
             event = new CameraTestEvent();
             eventDispatcher.notify(event);
 
-/*
+      /*
             Thread.sleep(sleep * 10);
             log("will send ShutdownEvent");
             event = new ShutdownEvent();

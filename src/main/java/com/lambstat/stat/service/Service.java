@@ -10,6 +10,8 @@ public interface Service extends Runnable {
 
     void notify(Event e);
 
+    void broadcast(Event e);
+
     Set<Class<? extends Event>> getEventsToListen();
 
     void registerEvents(Set<Class<? extends Event>> events);
