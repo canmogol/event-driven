@@ -7,6 +7,7 @@ import com.lambstat.stat.event.Event;
 import com.lambstat.stat.event.ShutdownEvent;
 import com.lambstat.stat.service.EventDispatcher;
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 
@@ -14,7 +15,7 @@ public class EventProducerTester implements Runnable {
 
     private EventDispatcher eventDispatcher;
     private Logger L = Logger.getLogger(getClass().getSimpleName());
-    private int sleep = 2000;
+    private int sleep = 100;
 
     public EventProducerTester(EventDispatcher eventDispatcher) {
         this.eventDispatcher = eventDispatcher;
@@ -25,22 +26,22 @@ public class EventProducerTester implements Runnable {
 
         try {
             Thread.sleep(sleep);
-            L.info(Thread.currentThread().getId() + " will send CaptureImageEvent");
+            log("will send CaptureImageEvent");
             Event event = new CaptureImageEvent();
             eventDispatcher.notify(event);
 
             Thread.sleep(sleep);
-            L.info(Thread.currentThread().getId() + " will send CaptureVideoEvent");
+            log("will send CaptureVideoEvent");
             event = new CaptureVideoEvent();
             eventDispatcher.notify(event);
 
             Thread.sleep(sleep);
-            L.info(Thread.currentThread().getId() + " will send CameraTestEvent");
+            log("will send CameraTestEvent");
             event = new CameraTestEvent();
             eventDispatcher.notify(event);
 
             Thread.sleep(sleep);
-            L.info(Thread.currentThread().getId() + " will send ShutdownEvent");
+            log("will send ShutdownEvent");
             event = new ShutdownEvent();
             eventDispatcher.notify(event);
 
@@ -48,6 +49,11 @@ public class EventProducerTester implements Runnable {
             e.printStackTrace();
         }
 
-        L.info(Thread.currentThread().getId() + " tester out");
+        log("tester out");
     }
+
+    public void log(String log) {
+        L.info("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
+    }
+
 }

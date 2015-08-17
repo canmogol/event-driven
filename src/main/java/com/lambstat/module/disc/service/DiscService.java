@@ -9,7 +9,7 @@ import java.util.HashSet;
 public class DiscService extends AbstractService {
 
     public DiscService() {
-        registerEvents(new HashSet<Class<? extends Event>>() {{
+        super(new HashSet<Class<? extends Event>>() {{
             add(WriteToDiscEvent.class);
         }});
     }

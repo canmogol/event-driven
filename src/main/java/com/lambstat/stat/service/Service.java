@@ -6,6 +6,8 @@ import java.util.Set;
 
 public interface Service extends Runnable {
 
+    void dropEvents();
+
     void notify(Event e);
 
     Set<Class<? extends Event>> eventsToListen();

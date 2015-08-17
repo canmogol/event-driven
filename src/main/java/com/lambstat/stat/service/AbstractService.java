@@ -2,10 +2,13 @@ package com.lambstat.stat.service;
 
 
 import com.lambstat.stat.event.Event;
+import com.lambstat.stat.event.EventsRegisteredEvent;
+import com.lambstat.stat.event.EventsUnregisteredEvent;
 import com.lambstat.stat.event.ShutdownEvent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -22,6 +25,12 @@ public abstract class AbstractService implements Service {
     private Service broadcastService;
     private boolean running = true;
 
+    public AbstractService(Set<Class<? extends Event>> eventsToListen) {
+        if (eventsToListen != null) {
+            eventsToListen().addAll(eventsToListen);
+        }
+    }
+
     public void handleEvent(Event event) {
         log("Generic Event, will do nothing, event: " + event);
     }
@@ -32,16 +41,27 @@ public abstract class AbstractService implements Service {
     }
 
     public void registerEvents(Set<Class<? extends Event>> events) {
+        // add events to list
         eventsToListen().addAll(events);
+        // notify that new events added for this service
+        notify(new EventsRegisteredEvent(this, events));
     }
 
     @Override
     public void unregisterEvents(Set<Class<? extends Event>> events) {
+        // remove events from list
         eventsToListen().removeAll(events);
+        // notify that new events removed for this service
+        notify(new EventsUnregisteredEvent(this, events));
     }
 
     public void broadcast(Event event) {
         broadcastService.notify(event);
+    }
+
+    @Override
+    public void dropEvents() {
+        queue.clear();
     }
 
     @Override
@@ -93,7 +113,7 @@ public abstract class AbstractService implements Service {
     }
 
     public void log(String log) {
-        L.info(Thread.currentThread().getId() + " [" + getClass().getSimpleName() + "] " + log);
+        L.info("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
     }
 
 }

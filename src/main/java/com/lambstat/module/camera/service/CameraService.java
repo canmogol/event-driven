@@ -12,7 +12,7 @@ import java.util.HashSet;
 public class CameraService extends AbstractService {
 
     public CameraService() {
-        registerEvents(new HashSet<Class<? extends Event>>() {{
+        super(new HashSet<Class<? extends Event>>() {{
             add(CaptureImageEvent.class);
             add(CaptureVideoEvent.class);
             add(CameraTestEvent.class);
@@ -43,7 +43,7 @@ public class CameraService extends AbstractService {
     private void simulate() {
         try {
             log("simulating work");
-            Thread.sleep(1000);
+            Thread.sleep(5000);
             log("work done");
         } catch (InterruptedException e) {
             e.printStackTrace();

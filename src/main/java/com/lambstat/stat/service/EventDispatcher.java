@@ -2,8 +2,7 @@ package com.lambstat.stat.service;
 
 import com.lambstat.module.camera.service.CameraService;
 import com.lambstat.module.disc.service.DiscService;
-import com.lambstat.stat.event.Event;
-import com.lambstat.stat.event.ShutdownEvent;
+import com.lambstat.stat.event.*;
 import io.netty.util.internal.ConcurrentSet;
 
 import java.util.HashSet;
@@ -13,17 +12,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EventDispatcher extends AbstractService {
 
-    private Set<Class<? extends Event>> eventsToListen = new HashSet<>();
-
     private Map<Class<? extends Event>, Set<Service>> eventServiceMap = new ConcurrentHashMap<>();
     private Set<Service> services = new ConcurrentSet<>();
     private HashSet<Class<? extends Service>> serviceClasses;
 
-
-    @Override
-    public Set<Class<? extends Event>> eventsToListen() {
-        return eventsToListen;
+    public EventDispatcher() {
+        super(new HashSet<Class<? extends Event>>() {{
+            add(EventsRegisteredEvent.class);
+            add(EventsUnregisteredEvent.class);
+        }});
     }
+
 
     @Override
     public void run() {
@@ -79,11 +78,44 @@ public class EventDispatcher extends AbstractService {
         }
     }
 
+    public void handleEvent(ShutdownImmediatelyEvent event) {
+        // clear all events for services registered to ShutdownEvent
+        if (eventServiceMap.containsKey(ShutdownEvent.class)) {
+            for (Service service : eventServiceMap.get(ShutdownEvent.class)) {
+                service.dropEvents();
+            }
+        }
+        // notify ShutdownEvent
+        handleEvent(event.getShutdownEvent());
+    }
+
     @Override
     public void handleEvent(ShutdownEvent event) {
         // first shutdown other services
         handleEvent((Event) event);
         // then shutdown event dispatcher
         super.handleEvent(event);
+    }
+
+    public void handleEvent(EventsRegisteredEvent event) {
+        // add this service for each of the event types
+        for (Class<? extends Event> eventClass : event.getEvents()) {
+            if (!eventServiceMap.containsKey(eventClass)) {
+                Set<Service> serviceSet = new ConcurrentSet<>();
+                serviceSet.add(event.getService());
+                eventServiceMap.put(eventClass, serviceSet);
+            } else {
+                eventServiceMap.get(eventClass).add(event.getService());
+            }
+        }
+    }
+
+    public void handleEvent(EventsUnregisteredEvent event) {
+        // remove this service for each of the event types
+        for (Class<? extends Event> eventClass : event.getEvents()) {
+            if (eventServiceMap.containsKey(eventClass)) {
+                eventServiceMap.get(eventClass).remove(event.getService());
+            }
+        }
     }
 }

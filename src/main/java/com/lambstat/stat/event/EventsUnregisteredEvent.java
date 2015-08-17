@@ -4,12 +4,12 @@ import com.lambstat.stat.service.Service;
 
 import java.util.Set;
 
-public class EventsRegisteredEvent implements Event {
+public class EventsUnregisteredEvent implements Event {
 
     private final Service service;
     private final Set<Class<? extends Event>> events;
 
-    public EventsRegisteredEvent(Service service, Set<Class<? extends Event>> events) {
+    public EventsUnregisteredEvent(Service service, Set<Class<? extends Event>> events) {
         this.service = service;
         this.events = events;
     }
