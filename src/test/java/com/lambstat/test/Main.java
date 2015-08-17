@@ -1,4 +1,4 @@
-package com.lambstat.stat;
+package com.lambstat.test;
 
 import com.lambstat.stat.service.EventDispatcher;
 

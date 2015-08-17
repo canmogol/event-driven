@@ -1,15 +1,12 @@
-package com.lambstat.stat.remote;
+package com.lambstat.module.zmq.service;
 
-import com.lambstat.module.disc.event.WriteToDiscEvent;
 import com.lambstat.stat.event.Event;
 import com.lambstat.stat.event.ShutdownEvent;
 import com.lambstat.stat.service.AbstractService;
 import org.zeromq.ZMQ;
 
+import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.util.HashSet;
 
 public class ZMQService extends AbstractService {
@@ -17,9 +14,7 @@ public class ZMQService extends AbstractService {
     private ZMQListener zmqListener = new ZMQListener();
 
     public ZMQService() {
-        super(new HashSet<Class<? extends Event>>() {{
-            add(WriteToDiscEvent.class);
-        }});
+        super(new HashSet<Class<? extends Event>>());
     }
 
     @Override
@@ -52,7 +47,6 @@ public class ZMQService extends AbstractService {
             log("listening at " + connectionString);
 
             while (running && !Thread.currentThread().isInterrupted()) {
-
                 log("waiting for next request from client");
 
                 byte[] bytes = new byte[0];
@@ -67,25 +61,19 @@ public class ZMQService extends AbstractService {
                     }
                 }
 
-                log("bytes received #bytes: " + bytes.length);
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+                XMLDecoder xmlDecoder = new XMLDecoder(byteArrayInputStream);
+                Object object = xmlDecoder.readObject();
+                xmlDecoder.close();
 
-                ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-                try (ObjectInput in = new ObjectInputStream(bis);) {
-                    Object object = in.readObject();
-                    log("read object: " + object);
-                    if (object instanceof Event) {
-                        log("will broadcast event: " + object);
-                        broadcast((Event) object);
-                    }
-                } catch (ClassNotFoundException | IOException e) {
-                    e.printStackTrace();
+                if (object instanceof Event) {
+                    broadcast((Event) object);
                 }
 
                 // Send reply back to client
-                String reply = "World";
-                responder.send(reply.getBytes(), 0);
+                responder.send("OK".getBytes(), 0);
             }
-            if(running){
+            if (running) {
                 responder.close();
                 context.term();
             }

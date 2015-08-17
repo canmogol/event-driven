@@ -3,7 +3,7 @@ package com.lambstat.stat.service;
 import com.lambstat.module.camera.service.CameraService;
 import com.lambstat.module.disc.service.DiscService;
 import com.lambstat.stat.event.*;
-import com.lambstat.stat.remote.ZMQService;
+import com.lambstat.module.zmq.service.ZMQService;
 
 import java.util.HashSet;
 import java.util.Map;
