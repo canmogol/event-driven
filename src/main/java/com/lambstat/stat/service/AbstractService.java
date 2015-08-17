@@ -27,7 +27,7 @@ public abstract class AbstractService implements Service {
 
     public AbstractService(Set<Class<? extends Event>> eventsToListen) {
         if (eventsToListen != null) {
-            eventsToListen().addAll(eventsToListen);
+            getEventsToListen().addAll(eventsToListen);
         }
     }
 
@@ -36,13 +36,13 @@ public abstract class AbstractService implements Service {
     }
 
     @Override
-    public Set<Class<? extends Event>> eventsToListen() {
+    public Set<Class<? extends Event>> getEventsToListen() {
         return eventsToListen;
     }
 
     public void registerEvents(Set<Class<? extends Event>> events) {
         // add events to list
-        eventsToListen().addAll(events);
+        getEventsToListen().addAll(events);
         // notify that new events added for this service
         notify(new EventsRegisteredEvent(this, events));
     }
@@ -50,13 +50,15 @@ public abstract class AbstractService implements Service {
     @Override
     public void unregisterEvents(Set<Class<? extends Event>> events) {
         // remove events from list
-        eventsToListen().removeAll(events);
+        getEventsToListen().removeAll(events);
         // notify that new events removed for this service
-        notify(new EventsUnregisteredEvent(this, events));
+        broadcast(new EventsUnregisteredEvent(this, events));
     }
 
     public void broadcast(Event event) {
-        broadcastService.notify(event);
+        if (broadcastService != null) {
+            broadcastService.notify(event);
+        }
     }
 
     @Override
@@ -108,6 +110,10 @@ public abstract class AbstractService implements Service {
     }
 
     public void handleEvent(ShutdownEvent event) {
+        // first unregister all events for this service
+        Set<Class<? extends Event>> allEvents = new HashSet<>();
+        allEvents.addAll(getEventsToListen());
+        unregisterEvents(allEvents);
         log("Shutdown Event, will shutdown this service, event: " + event);
         running = false;// will break the loop at while or if condition
     }

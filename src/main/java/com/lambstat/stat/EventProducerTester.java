@@ -15,7 +15,7 @@ public class EventProducerTester implements Runnable {
 
     private EventDispatcher eventDispatcher;
     private Logger L = Logger.getLogger(getClass().getSimpleName());
-    private int sleep = 100;
+    private int sleep = 1000;
 
     public EventProducerTester(EventDispatcher eventDispatcher) {
         this.eventDispatcher = eventDispatcher;
@@ -40,9 +40,10 @@ public class EventProducerTester implements Runnable {
             event = new CameraTestEvent();
             eventDispatcher.notify(event);
 
-            Thread.sleep(sleep);
+            Thread.sleep(sleep * 10);
             log("will send ShutdownEvent");
             event = new ShutdownEvent();
+            // event = new ShutdownImmediatelyEvent(new ShutdownEvent());
             eventDispatcher.notify(event);
 
         } catch (InterruptedException e) {

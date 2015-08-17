@@ -43,7 +43,7 @@ public class CameraService extends AbstractService {
     private void simulate() {
         try {
             log("simulating work");
-            Thread.sleep(5000);
+            Thread.sleep(3000);
             log("work done");
         } catch (InterruptedException e) {
             e.printStackTrace();

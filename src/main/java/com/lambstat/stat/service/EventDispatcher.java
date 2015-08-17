@@ -5,9 +5,7 @@ import com.lambstat.module.disc.service.DiscService;
 import com.lambstat.stat.event.*;
 import io.netty.util.internal.ConcurrentSet;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EventDispatcher extends AbstractService {
@@ -22,7 +20,6 @@ public class EventDispatcher extends AbstractService {
             add(EventsUnregisteredEvent.class);
         }});
     }
-
 
     @Override
     public void run() {
@@ -47,7 +44,7 @@ public class EventDispatcher extends AbstractService {
             try {
                 Service service = sClass.newInstance();
                 service.setBroadcastService(this);
-                Set<Class<? extends Event>> eventsToListen = service.eventsToListen();
+                Set<Class<? extends Event>> eventsToListen = service.getEventsToListen();
                 for (Class<? extends Event> eventClass : eventsToListen) {
                     if (!eventServiceMap.containsKey(eventClass)) {
                         Set<Service> serviceSet = new ConcurrentSet<>();
@@ -67,7 +64,7 @@ public class EventDispatcher extends AbstractService {
 
     @Override
     public void handleEvent(Event event) {
-        if (eventServiceMap.containsKey(event.getClass())) {
+        if (eventServiceMap.containsKey(event.getClass()) && eventServiceMap.get(event.getClass()).size() > 0) {
             for (Service service : eventServiceMap.get(event.getClass())) {
                 try {
                     service.notify(event);
@@ -75,6 +72,8 @@ public class EventDispatcher extends AbstractService {
                     pikachu.printStackTrace();
                 }
             }
+        } else {
+            log("!!! THERE IS NO REGISTERED SERVICE FOR THIS EVENT: " + event);
         }
     }
 
