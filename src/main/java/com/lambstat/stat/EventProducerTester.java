@@ -15,7 +15,6 @@ public class EventProducerTester implements Runnable {
 
     private EventDispatcher eventDispatcher;
     private Logger L = Logger.getLogger(getClass().getSimpleName());
-    private int sleep = 1000;
 
     public EventProducerTester(EventDispatcher eventDispatcher) {
         this.eventDispatcher = eventDispatcher;
@@ -25,6 +24,7 @@ public class EventProducerTester implements Runnable {
     public void run() {
 
         try {
+            int sleep = 1000;
             Thread.sleep(sleep);
             log("will send CaptureImageEvent");
             Event event = new CaptureImageEvent();
