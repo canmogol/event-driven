@@ -1,6 +1,6 @@
-package com.lambstat.stat.event;
+package com.lambstat.core.event;
 
-public class ShutdownImmediatelyEvent implements Event{
+public class ShutdownImmediatelyEvent extends BaseEvent {
 
     private ShutdownEvent shutdownEvent;
 

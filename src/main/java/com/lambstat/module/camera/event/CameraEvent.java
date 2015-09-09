@@ -1,6 +1,6 @@
 package com.lambstat.module.camera.event;
 
-import com.lambstat.stat.event.Event;
+import com.lambstat.core.event.BaseEvent;
 
-public abstract class CameraEvent implements Event {
+public abstract class CameraEvent extends BaseEvent {
 }

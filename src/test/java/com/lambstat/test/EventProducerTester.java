@@ -1,14 +1,11 @@
 package com.lambstat.test;
 
+import com.lambstat.core.event.Event;
+import com.lambstat.core.service.EventDispatcher;
 import com.lambstat.module.camera.event.CameraTestEvent;
-import com.lambstat.module.camera.event.CaptureImageEvent;
-import com.lambstat.module.camera.event.CaptureVideoEvent;
-import com.lambstat.stat.event.Event;
-import com.lambstat.stat.service.EventDispatcher;
 
 import java.util.Date;
 import java.util.logging.Logger;
-
 
 public class EventProducerTester implements Runnable {
 
@@ -24,6 +21,7 @@ public class EventProducerTester implements Runnable {
 
         try {
             int sleep = 1000;
+/*
             Thread.sleep(sleep);
             log("will send CaptureImageEvent");
             Event event = new CaptureImageEvent();
@@ -34,10 +32,13 @@ public class EventProducerTester implements Runnable {
             event = new CaptureVideoEvent();
             eventDispatcher.notify(event);
 
+*/
             Thread.sleep(sleep);
             log("will send CameraTestEvent");
-            event = new CameraTestEvent();
+            Event event = new CameraTestEvent();
             eventDispatcher.notify(event);
+
+
 
       /*
             Thread.sleep(sleep * 10);

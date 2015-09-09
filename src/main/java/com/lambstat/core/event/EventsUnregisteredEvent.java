@@ -1,15 +1,15 @@
-package com.lambstat.stat.event;
+package com.lambstat.core.event;
 
-import com.lambstat.stat.service.Service;
+import com.lambstat.core.service.Service;
 
 import java.util.Set;
 
-public class EventsRegisteredEvent implements Event {
+public class EventsUnregisteredEvent extends BaseEvent {
 
     private final Service service;
     private final Set<Class<? extends Event>> events;
 
-    public EventsRegisteredEvent(Service service, Set<Class<? extends Event>> events) {
+    public EventsUnregisteredEvent(Service service, Set<Class<? extends Event>> events) {
         this.service = service;
         this.events = events;
     }

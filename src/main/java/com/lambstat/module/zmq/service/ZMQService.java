@@ -1,9 +1,8 @@
 package com.lambstat.module.zmq.service;
 
+import com.lambstat.core.event.ShutdownEvent;
+import com.lambstat.core.service.AbstractService;
 import com.lambstat.module.zmq.listener.ZMQListener;
-import com.lambstat.stat.event.Event;
-import com.lambstat.stat.event.ShutdownEvent;
-import com.lambstat.stat.service.AbstractService;
 
 import java.util.HashSet;
 
@@ -13,7 +12,7 @@ public class ZMQService extends AbstractService {
     private Thread listenerThread;
 
     public ZMQService() {
-        super(new HashSet<Class<? extends Event>>());
+        super(new HashSet<>());
     }
 
     @Override

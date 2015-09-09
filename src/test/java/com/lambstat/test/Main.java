@@ -1,6 +1,6 @@
 package com.lambstat.test;
 
-import com.lambstat.stat.service.EventDispatcher;
+import com.lambstat.core.service.EventDispatcher;
 
 public class Main {
 

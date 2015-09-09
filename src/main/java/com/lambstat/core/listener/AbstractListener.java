@@ -1,7 +1,7 @@
-package com.lambstat.stat.listener;
+package com.lambstat.core.listener;
 
-import com.lambstat.stat.event.Event;
-import com.lambstat.stat.service.Service;
+import com.lambstat.core.event.BaseEvent;
+import com.lambstat.core.service.Service;
 
 import java.util.Date;
 import java.util.logging.Logger;
@@ -15,8 +15,8 @@ public class AbstractListener implements Listener {
         this.service = service;
     }
 
-    public void broadcast(Event event) {
-        service.broadcast(event);
+    public void broadcast(BaseEvent baseEvent) {
+        service.broadcast(baseEvent);
     }
 
     public void log(String log) {

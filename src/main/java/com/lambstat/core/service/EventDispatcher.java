@@ -1,8 +1,8 @@
-package com.lambstat.stat.service;
+package com.lambstat.core.service;
 
+import com.lambstat.core.event.*;
 import com.lambstat.module.camera.service.CameraService;
 import com.lambstat.module.disc.service.DiscService;
-import com.lambstat.stat.event.*;
 import com.lambstat.module.zmq.service.ZMQService;
 
 import java.util.HashSet;
@@ -77,6 +77,11 @@ public class EventDispatcher extends AbstractService {
             }
         } else {
             log("!!! THERE IS NO REGISTERED SERVICE FOR THIS EVENT: " + event);
+            while (event.parent() != null) {
+                log("" + event.parent());
+                event = event.parent();
+            }
+            log("" + event);
         }
     }
 
@@ -94,7 +99,7 @@ public class EventDispatcher extends AbstractService {
     @Override
     public void handleEvent(ShutdownEvent event) {
         // first shutdown other services
-        handleEvent((Event) event);
+        handleEvent((BaseEvent) event);
         // then shutdown event dispatcher
         super.handleEvent(event);
     }

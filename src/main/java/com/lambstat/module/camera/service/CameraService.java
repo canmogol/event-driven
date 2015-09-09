@@ -1,11 +1,12 @@
 package com.lambstat.module.camera.service;
 
+import com.lambstat.core.event.BaseEvent;
+import com.lambstat.core.event.Event;
+import com.lambstat.core.service.AbstractService;
 import com.lambstat.module.camera.event.CameraTestEvent;
 import com.lambstat.module.camera.event.CaptureImageEvent;
 import com.lambstat.module.camera.event.CaptureVideoEvent;
 import com.lambstat.module.disc.event.WriteToDiscEvent;
-import com.lambstat.stat.event.Event;
-import com.lambstat.stat.service.AbstractService;
 
 import java.util.HashSet;
 
@@ -32,7 +33,8 @@ public class CameraService extends AbstractService {
     public void handleEvent(CameraTestEvent event) {
         log("CameraTestEvent: " + event);
         simulate();
-        Event e = new WriteToDiscEvent(
+        BaseEvent e = new WriteToDiscEvent(
+                event,
                 new byte[]{1, 2, 3, 4, 5},
                 "image0123.jpg"
         );

@@ -1,6 +1,6 @@
-package com.lambstat.stat.service;
+package com.lambstat.core.service;
 
-import com.lambstat.stat.event.Event;
+import com.lambstat.core.event.Event;
 
 import java.util.Set;
 

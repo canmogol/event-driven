@@ -1,10 +1,10 @@
 package com.lambstat.module.zmq.listener;
 
+import com.lambstat.core.event.BaseEvent;
 import com.lambstat.module.zmq.event.ZMQFailEvent;
 import com.lambstat.module.zmq.event.ZMQSuccessEvent;
-import com.lambstat.stat.event.Event;
-import com.lambstat.stat.listener.AbstractListener;
-import com.lambstat.stat.service.Service;
+import com.lambstat.core.listener.AbstractListener;
+import com.lambstat.core.service.Service;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
@@ -46,9 +46,9 @@ public class ZMQListener extends AbstractListener implements Runnable{
             }
 
             Object object = byteToObject(bytes);
-            if (object != null && object instanceof Event) {
+            if (object != null && object instanceof BaseEvent) {
                 log("broadcast event");
-                broadcast((Event) object);
+                broadcast((BaseEvent) object);
                 // Send reply back to client
                 responder.send(objectToByte(new ZMQSuccessEvent()), 0);
             } else {
@@ -64,13 +64,13 @@ public class ZMQListener extends AbstractListener implements Runnable{
         }
     }
 
-    private byte[] objectToByte(Event event) {
+    private byte[] objectToByte(BaseEvent baseEvent) {
         byte[] bytes = new byte[0];
         try (
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 ObjectOutput out = new ObjectOutputStream(bos);
         ) {
-            out.writeObject(event);
+            out.writeObject(baseEvent);
             bytes = bos.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();

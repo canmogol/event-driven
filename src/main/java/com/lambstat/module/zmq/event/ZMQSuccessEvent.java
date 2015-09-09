@@ -1,6 +1,6 @@
 package com.lambstat.module.zmq.event;
 
-import com.lambstat.stat.event.Event;
+import com.lambstat.core.event.BaseEvent;
 
-public class ZMQSuccessEvent implements Event {
+public class ZMQSuccessEvent extends BaseEvent {
 }

@@ -1,10 +1,10 @@
-package com.lambstat.stat.service;
+package com.lambstat.core.service;
 
 
-import com.lambstat.stat.event.Event;
-import com.lambstat.stat.event.EventsRegisteredEvent;
-import com.lambstat.stat.event.EventsUnregisteredEvent;
-import com.lambstat.stat.event.ShutdownEvent;
+import com.lambstat.core.event.Event;
+import com.lambstat.core.event.EventsRegisteredEvent;
+import com.lambstat.core.event.EventsUnregisteredEvent;
+import com.lambstat.core.event.ShutdownEvent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -31,8 +31,8 @@ public abstract class AbstractService implements Service {
         }
     }
 
-    public void handleEvent(Event event) {
-        log("Generic Event, will do nothing, event: " + event);
+    public void handleEvent(Event baseEvent) {
+        log("Generic Event, will do nothing, baseEvent: " + baseEvent);
     }
 
     @Override
@@ -55,9 +55,9 @@ public abstract class AbstractService implements Service {
         broadcast(new EventsUnregisteredEvent(this, events));
     }
 
-    public void broadcast(Event event) {
+    public void broadcast(Event baseEvent) {
         if (broadcastService != null) {
-            broadcastService.notify(event);
+            broadcastService.notify(baseEvent);
         }
     }
 
@@ -67,9 +67,9 @@ public abstract class AbstractService implements Service {
     }
 
     @Override
-    public void notify(Event event) {
+    public void notify(Event baseEvent) {
         try {
-            queue.put(event);
+            queue.put(baseEvent);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -84,21 +84,21 @@ public abstract class AbstractService implements Service {
     public void run() {
         while (running) {
             try {
-                Event event = queue.take();
+                Event baseEvent = queue.take();
                 if (!running) {
-                    // current event will be discarded
+                    // current baseEvent will be discarded
                     break;
                 }
                 try {
-                    Method method = this.getClass().getMethod("handleEvent", event.getClass());
+                    Method method = this.getClass().getMethod("handleEvent", baseEvent.getClass());
                     if (!method.isAccessible()) {
                         method.setAccessible(true);
                     }
-                    method.invoke(this, event);
+                    method.invoke(this, baseEvent);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 } catch (NoSuchMethodException e) {
-                    handleEvent(event);
+                    handleEvent(baseEvent);
                 }
             } catch (InterruptedException e) {
                 // interrupted, doing down
