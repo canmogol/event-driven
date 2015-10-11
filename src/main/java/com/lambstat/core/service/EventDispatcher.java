@@ -3,6 +3,7 @@ package com.lambstat.core.service;
 import com.lambstat.core.event.*;
 import com.lambstat.module.camera.service.CameraService;
 import com.lambstat.module.disc.service.DiscService;
+import com.lambstat.module.jetty.service.JettyService;
 import com.lambstat.module.zmq.service.ZMQService;
 
 import java.util.HashSet;
@@ -39,6 +40,7 @@ public class EventDispatcher extends AbstractService {
             add(CameraService.class);
             add(DiscService.class);
             add(ZMQService.class);
+            add(JettyService.class);
         }};
     }
 

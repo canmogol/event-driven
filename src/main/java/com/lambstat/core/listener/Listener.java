@@ -1,4 +1,6 @@
 package com.lambstat.core.listener;
 
-public interface Listener {
+import java.io.Closeable;
+
+public interface Listener extends Closeable, Runnable{
 }

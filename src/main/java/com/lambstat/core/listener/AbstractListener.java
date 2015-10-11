@@ -6,7 +6,7 @@ import com.lambstat.core.service.Service;
 import java.util.Date;
 import java.util.logging.Logger;
 
-public class AbstractListener implements Listener {
+public abstract class AbstractListener implements Listener {
 
     private Logger L = Logger.getLogger(getClass().getSimpleName());
     private Service service;
