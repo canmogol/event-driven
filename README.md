@@ -1,4 +1,4 @@
-# baseEvent-driven
+# event-driven
 Event driven multi-threaded services
 
 try running com.lambstat.test.Main under test folder to start the application
