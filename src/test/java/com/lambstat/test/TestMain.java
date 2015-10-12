@@ -2,7 +2,7 @@ package com.lambstat.test;
 
 import com.lambstat.core.service.EventDispatcher;
 
-public class Main {
+public class TestMain {
 
     public static void main(String[] args) {
         EventDispatcher eventDispatcher = new EventDispatcher();

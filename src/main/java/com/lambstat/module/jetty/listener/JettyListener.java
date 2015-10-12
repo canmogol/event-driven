@@ -23,7 +23,7 @@ public class JettyListener extends AbstractListener {
         );
         context.setContextPath("/");
 
-        Server jettyServer = new Server(8080);
+        jettyServer = new Server(8080);
         jettyServer.setHandler(context);
 
         ServletHolder jerseyServlet = context.addServlet(
@@ -41,8 +41,6 @@ public class JettyListener extends AbstractListener {
             jettyServer.join();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            jettyServer.destroy();
         }
     }
 
