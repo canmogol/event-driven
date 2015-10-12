@@ -40,7 +40,7 @@ public class JettyResource extends BaseResource {
     @GET
     @Path("/file/{name}")
     @Produces({"application/xml"})
-    public String applicationWadl(@PathParam("name") String name) {
+    public String file(@PathParam("name") String name) {
         BufferedReader br = null;
         try {
             InputStream inputStream = getClass().getResourceAsStream("/" + name);

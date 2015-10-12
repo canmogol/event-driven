@@ -8,4 +8,6 @@ public interface Response extends Serializable {
 
     Status getStatus();
 
+    String getType();
+
 }
