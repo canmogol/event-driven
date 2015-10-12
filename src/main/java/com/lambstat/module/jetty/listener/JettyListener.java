@@ -19,11 +19,12 @@ public class JettyListener extends AbstractListener {
     @Override
     public void run() {
         ServletContextHandler context = new ServletContextHandler(
-                ServletContextHandler.SESSIONS|ServletContextHandler.GZIP
+                ServletContextHandler.SESSIONS | ServletContextHandler.GZIP
         );
         context.setContextPath("/");
+        context.setAttribute(AbstractListener.class.getName(), this);
 
-        Server jettyServer = new Server(8080);
+        jettyServer = new Server(8080);
         jettyServer.setHandler(context);
 
         ServletHolder jerseyServlet = context.addServlet(
@@ -41,15 +42,15 @@ public class JettyListener extends AbstractListener {
             jettyServer.join();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            jettyServer.destroy();
         }
     }
 
     @Override
     public void close() {
         try {
-            jettyServer.stop();
+            if (jettyServer != null) {
+                jettyServer.stop();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

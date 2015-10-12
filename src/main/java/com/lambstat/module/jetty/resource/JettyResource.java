@@ -1,6 +1,8 @@
 package com.lambstat.module.jetty.resource;
 
+import com.lambstat.core.event.ShutdownEvent;
 import com.lambstat.module.jetty.data.LoginResponse;
+import com.lambstat.module.jetty.data.OkResponse;
 import com.lambstat.module.jetty.data.Param;
 
 import javax.ws.rs.*;
@@ -12,7 +14,7 @@ import java.io.InputStreamReader;
 @Path("/api")
 @Produces({"application/json"})
 @Consumes({"application/json"})
-public class JettyResource {
+public class JettyResource extends BaseResource {
 
     /**
      * @param username user's name to login
@@ -61,5 +63,12 @@ public class JettyResource {
                 }
             }
         }
+    }
+
+    @GET
+    @Path("/shutdown")
+    public OkResponse shutdown() {
+        super.broadcast(new ShutdownEvent());
+        return new OkResponse();
     }
 }

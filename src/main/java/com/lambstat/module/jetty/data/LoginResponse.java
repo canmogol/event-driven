@@ -1,9 +1,7 @@
 package com.lambstat.module.jetty.data;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 
-@XmlSeeAlso(AbstractResponse.class)
 @XmlRootElement
 public class LoginResponse extends AbstractResponse {
 
