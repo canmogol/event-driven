@@ -7,4 +7,4 @@ Jetty+Jersey restful web services added as a service, shade plugin generates a s
 
 or you may try running com.lambstat.test.TestMain under test folder to start the application
 
-and also try running com.lambstat.zmq.ZMQClient to test the remote baseEvent dispatch
+Sample client code can be found under "event-driven-client" project under ZMQClient and JerseyClient classes
