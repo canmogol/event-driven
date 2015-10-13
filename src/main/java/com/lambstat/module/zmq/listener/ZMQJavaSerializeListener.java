@@ -1,23 +1,23 @@
 package com.lambstat.module.zmq.listener;
 
 import com.lambstat.core.event.BaseEvent;
+import com.lambstat.core.listener.AbstractEndpointListener;
+import com.lambstat.core.service.Service;
 import com.lambstat.module.zmq.event.ZMQFailEvent;
 import com.lambstat.module.zmq.event.ZMQSuccessEvent;
-import com.lambstat.core.listener.AbstractListener;
-import com.lambstat.core.service.Service;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
 import java.io.*;
 
-public class ZMQListener extends AbstractListener implements Runnable{
+public class ZMQJavaSerializeListener extends AbstractEndpointListener  {
 
     private boolean running = true;
     private String connectionString = "tcp://*:9555";
     private ZMQ.Context context;
     private ZMQ.Socket responder;
 
-    public ZMQListener(Service service) {
+    public ZMQJavaSerializeListener(Service service) {
         super(service);
     }
 
@@ -37,11 +37,11 @@ public class ZMQListener extends AbstractListener implements Runnable{
             try {
                 // Wait for next request from the client
                 bytes = responder.recv(0);
-            } catch (ZMQException ex) {
+            } catch (ZMQException e) {
                 if (!running) {
                     break;
                 } else {
-                    ex.printStackTrace();
+                    log("Could zmq got exception while running, exception: " + e.getMessage());
                 }
             }
 
@@ -73,7 +73,7 @@ public class ZMQListener extends AbstractListener implements Runnable{
             out.writeObject(baseEvent);
             bytes = bos.toByteArray();
         } catch (IOException e) {
-            e.printStackTrace();
+            log("Could not write event to bytes, event: " + baseEvent + " exception: " + e.getMessage());
         }
         return bytes;
     }
@@ -86,14 +86,19 @@ public class ZMQListener extends AbstractListener implements Runnable{
         ) {
             object = in.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            log("Could not read object from #bytes: " + bytes.length + " exception: " + e.getMessage());
         }
         return object;
     }
 
-    public void close() {
+    public void close() throws IOException{
         running = false;
         responder.close();
         context.term();
+    }
+
+    @Override
+    public String getStatus() {
+        return String.valueOf(running);
     }
 }

@@ -3,7 +3,7 @@ package com.lambstat.core.service;
 import com.lambstat.core.event.*;
 import com.lambstat.module.camera.service.CameraService;
 import com.lambstat.module.disc.service.DiscService;
-import com.lambstat.module.jetty.service.JettyService;
+import com.lambstat.module.webserver.service.WebServerService;
 import com.lambstat.module.zmq.service.ZMQService;
 
 import java.util.HashSet;
@@ -40,7 +40,7 @@ public class EventDispatcher extends AbstractService {
             add(CameraService.class);
             add(DiscService.class);
             add(ZMQService.class);
-            add(JettyService.class);
+            add(WebServerService.class);
         }};
     }
 
@@ -61,7 +61,7 @@ public class EventDispatcher extends AbstractService {
                 }
                 services.add(service);
             } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
+                error("Could not create service: " + sClass + " exception: " + e.getMessage());
             }
         }
         return services;
@@ -74,7 +74,7 @@ public class EventDispatcher extends AbstractService {
                 try {
                     service.notify(event);
                 } catch (Throwable pikachu) {
-                    pikachu.printStackTrace();
+                    error("Could not notify service: " + service + " exception: " + pikachu.getMessage());
                 }
             }
         } else {
@@ -83,7 +83,7 @@ public class EventDispatcher extends AbstractService {
                 log("" + event.parent());
                 event = event.parent();
             }
-            log("" + event);
+            log("found root event: " + event);
         }
     }
 

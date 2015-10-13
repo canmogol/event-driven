@@ -1,4 +1,4 @@
-package com.lambstat.module.jetty.data;
+package com.lambstat.model;
 
 
 import javax.xml.bind.annotation.XmlRootElement;

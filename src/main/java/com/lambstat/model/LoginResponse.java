@@ -1,4 +1,4 @@
-package com.lambstat.module.jetty.data;
+package com.lambstat.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 public class LoginResponse extends AbstractResponse {
 
     private boolean logged = false;
-    private String name;
+    private String name = "";
 
     public String getName() {
         return name;

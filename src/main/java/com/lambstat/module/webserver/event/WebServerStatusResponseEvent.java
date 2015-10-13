@@ -1,12 +1,12 @@
-package com.lambstat.module.jetty.event;
+package com.lambstat.module.webserver.event;
 
 import com.lambstat.core.event.BaseEvent;
 
-public class JettyStatusResponseEvent extends BaseEvent {
+public class WebServerStatusResponseEvent extends BaseEvent {
 
     private String status;
 
-    public JettyStatusResponseEvent(String status) {
+    public WebServerStatusResponseEvent(String status) {
         this.status = status;
     }
 

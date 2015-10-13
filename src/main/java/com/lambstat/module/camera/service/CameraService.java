@@ -48,7 +48,7 @@ public class CameraService extends AbstractService {
             Thread.sleep(3000);
             log("work done");
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            error("Could not sleep, exception: " + e.getMessage());
         }
     }
 

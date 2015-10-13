@@ -71,7 +71,7 @@ public abstract class AbstractService implements Service {
         try {
             queue.put(baseEvent);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            error("Could not add event to queue, event: " + baseEvent + " exception: " + e.getMessage());
         }
     }
 
@@ -96,13 +96,13 @@ public abstract class AbstractService implements Service {
                     }
                     method.invoke(this, baseEvent);
                 } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
+                    error("Could not access/invoke method, exception: " + e.getMessage());
                 } catch (NoSuchMethodException e) {
                     handleEvent(baseEvent);
                 }
             } catch (InterruptedException e) {
                 // interrupted, doing down
-                e.printStackTrace();
+                error("service interrupted, exception: " + e.getMessage());
                 break;
             }
         }
@@ -120,6 +120,10 @@ public abstract class AbstractService implements Service {
 
     public void log(String log) {
         L.info("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
+    }
+
+    public void error(String log){
+        L.severe("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
     }
 
 }

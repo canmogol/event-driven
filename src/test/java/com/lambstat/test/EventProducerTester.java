@@ -49,7 +49,7 @@ public class EventProducerTester implements Runnable {
 */
 
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log("Could tester got interrupted, exception: " + e.getMessage());
         }
 
         log("tester out");

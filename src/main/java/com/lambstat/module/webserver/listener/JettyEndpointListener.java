@@ -1,27 +1,29 @@
-package com.lambstat.module.jetty.listener;
+package com.lambstat.module.webserver.listener;
 
-import com.lambstat.core.listener.AbstractListener;
+import com.lambstat.core.listener.AbstractEndpointListener;
+import com.lambstat.core.listener.EndpointListener;
 import com.lambstat.core.service.Service;
-import com.lambstat.module.jetty.resource.JettyResource;
+import com.lambstat.module.webserver.resource.UserResource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 
-public class JettyListener extends AbstractListener {
+public class JettyEndpointListener extends AbstractEndpointListener {
 
     private Server jettyServer;
 
-    public JettyListener(Service service) {
+    public JettyEndpointListener(Service service) {
         super(service);
     }
 
     @Override
     public void run() {
         ServletContextHandler context = new ServletContextHandler(
-                ServletContextHandler.SESSIONS|ServletContextHandler.GZIP
+                ServletContextHandler.SESSIONS | ServletContextHandler.GZIP
         );
         context.setContextPath("/");
+        context.setAttribute(EndpointListener.class.getName(), this);
 
         jettyServer = new Server(8080);
         jettyServer.setHandler(context);
@@ -33,14 +35,14 @@ public class JettyListener extends AbstractListener {
         jerseyServlet.setInitOrder(0);
         jerseyServlet.setInitParameter(
                 "jersey.config.server.provider.classnames",
-                JettyResource.class.getCanonicalName()
+                UserResource.class.getCanonicalName()
         );
 
         try {
             jettyServer.start();
             jettyServer.join();
         } catch (Exception e) {
-            e.printStackTrace();
+            log("Could not start/join jetty, exception: " + e.getMessage());
         }
     }
 
@@ -49,7 +51,7 @@ public class JettyListener extends AbstractListener {
         try {
             jettyServer.stop();
         } catch (Exception e) {
-            e.printStackTrace();
+            log("Could not stop jetty, exception: " + e.getMessage());
         }
     }
 
