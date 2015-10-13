@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" version="1.0" targetNamespace="http://model.lambstat.com" xmlns:tns="http://model.lambstat.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="abstractResponse" type="tns:abstractResponse"/>
+
+  <xs:element name="loginRequest" type="tns:loginRequest"/>
+
+  <xs:element name="loginResponse" type="tns:loginResponse"/>
+
+  <xs:element name="logoutResponse" type="tns:logoutResponse"/>
+
+  <xs:element name="shutdownRequest" type="tns:shutdownRequest"/>
+
+  <xs:element name="shutdownResponse" type="tns:shutdownResponse"/>
+
+  <xs:element name="status" type="tns:status"/>
+
+  <xs:complexType name="abstractResponse">
+    <xs:sequence>
+      <xs:element ref="tns:status" minOccurs="0"/>
+      <xs:element name="type" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="status">
+    <xs:sequence>
+      <xs:element name="message" type="xs:string" minOccurs="0"/>
+      <xs:element name="status" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="loginResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractResponse">
+        <xs:sequence>
+          <xs:element name="logged" type="xs:boolean"/>
+          <xs:element name="name" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="shutdownResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractResponse">
+        <xs:sequence>
+          <xs:element name="systemStatus" type="tns:systemStatus" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="logoutResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractResponse">
+        <xs:sequence>
+          <xs:element name="loggedOut" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="loginRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractResponse">
+        <xs:sequence>
+          <xs:element name="password" type="xs:string" minOccurs="0"/>
+          <xs:element name="username" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="shutdownRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractResponse">
+        <xs:sequence>
+          <xs:element name="immediately" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="systemStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="E3_RESTARTING"/>
+      <xs:enumeration value="E1_UNKNOWN"/>
+      <xs:enumeration value="E2_RUNNING"/>
+      <xs:enumeration value="E4_SHUTTING_DOWN"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
