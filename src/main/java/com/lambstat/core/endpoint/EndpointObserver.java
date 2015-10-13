@@ -2,8 +2,8 @@ package com.lambstat.core.endpoint;
 
 import com.lambstat.core.event.Event;
 
-public interface EndpointObserver {
+public interface EndpointObserver<T extends Event> {
 
-    void handleEvent(Event event);
+    void handleEvent(T event);
 
 }

@@ -16,8 +16,21 @@ public abstract class BaseEvent implements Event {
     }
 
     @Override
-    public Event parent() {
+    public Event getParent() {
         return parent;
+    }
+
+    @Override
+    public Event getRoot() {
+        Event event = this;
+        while (event.getParent() != null) {
+            event = event.getParent();
+        }
+        return event;
+    }
+
+    public String getUuid() {
+        return uuid.toString();
     }
 
     @Override

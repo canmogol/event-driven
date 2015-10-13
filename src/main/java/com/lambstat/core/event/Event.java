@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public interface Event extends Serializable {
 
-    Event parent();
+    String getUuid();
+
+    Event getParent();
+
+    Event getRoot();
 
 }

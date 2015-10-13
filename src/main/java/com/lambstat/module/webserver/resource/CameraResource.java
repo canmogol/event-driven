@@ -38,5 +38,4 @@ public class CameraResource extends BaseResource {
         return "FAILED";
     }
 
-
 }

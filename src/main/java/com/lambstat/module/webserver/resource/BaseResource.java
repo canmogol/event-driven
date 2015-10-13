@@ -19,8 +19,6 @@ public abstract class BaseResource {
 
     /**
      * Broadcast event via web server, web server will deliver this event to its own service which is in the event loop
-     *
-     * @param event
      */
     public void broadcast(Event event) {
         getEndpointListener().broadcast(event);
@@ -36,7 +34,7 @@ public abstract class BaseResource {
 
             @Override
             public Event call() throws Exception {
-                getEndpointListener().broadcast(event, eventClass, new EndpointObserver() {
+                getEndpointListener().broadcast(event, eventClass, new EndpointObserver<Event>() {
                     @Override
                     public void handleEvent(Event event) {
                         blockingQueue.add(event);

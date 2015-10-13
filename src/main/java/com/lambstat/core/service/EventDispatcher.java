@@ -79,11 +79,6 @@ public class EventDispatcher extends AbstractService {
             }
         } else {
             log("!!! THERE IS NO REGISTERED SERVICE FOR THIS EVENT: " + event);
-            while (event.parent() != null) {
-                log("" + event.parent());
-                event = event.parent();
-            }
-            log("found root event: " + event);
         }
     }
 
