@@ -57,4 +57,8 @@ public class WebServerService extends AbstractService {
         }
     }
 
+    public void handleEvent(Event event) {
+        webServerListener.handleEvent(event);
+    }
+
 }

@@ -17,7 +17,7 @@ public abstract class AbstractEndpointListener implements EndpointListener {
     }
 
     public void handleEvent(Event event) {
-        if (map.containsKey(event.getUuid())) {
+        if (map.containsKey(event.getRoot().getUuid())) {
             String uuid = event.getRoot().getUuid();
             if (map.containsKey(uuid)) {
                 map.get(uuid).handleEvent(event);

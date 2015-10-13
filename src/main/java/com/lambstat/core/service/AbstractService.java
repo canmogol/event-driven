@@ -43,8 +43,8 @@ public abstract class AbstractService implements Service {
     public void registerEvents(Set<Class<? extends Event>> events) {
         // add events to list
         getEventsToListen().addAll(events);
-        // notify that new events added for this service
-        notify(new EventsRegisteredEvent(this, events));
+        // new events added for this service
+        broadcast(new EventsRegisteredEvent(this, events));
     }
 
     @Override
@@ -122,7 +122,7 @@ public abstract class AbstractService implements Service {
         L.info("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
     }
 
-    public void error(String log){
+    public void error(String log) {
         L.severe("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
     }
 

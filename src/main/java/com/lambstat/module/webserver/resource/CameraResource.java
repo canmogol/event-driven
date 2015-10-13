@@ -18,7 +18,6 @@ import java.util.concurrent.Future;
 @Consumes({"application/json"})
 public class CameraResource extends BaseResource {
 
-
     @POST
     @Path("/cameraTest")
     public String cameraTest(ShutdownRequest shutdownRequest) {
@@ -28,9 +27,11 @@ public class CameraResource extends BaseResource {
         Future<Event> eventFuture = broadcast(event, FileAvailableEvent.class);
         try {
             // get method will block until the FileAvailableEvent available
-            FileAvailableEvent eventResponse = (FileAvailableEvent) eventFuture.get();
+            //FileAvailableEvent eventResponse = (FileAvailableEvent) eventFuture.get();
+            eventFuture.get();
             // return generated file name
-            return eventResponse.getFileName();
+            //return eventResponse.getFileName();
+            return "OK";
         } catch (InterruptedException | ExecutionException e) {
             error("execution exception while getting future, exception: " + e.getMessage());
         }

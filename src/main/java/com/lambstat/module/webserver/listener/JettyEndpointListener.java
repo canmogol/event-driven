@@ -7,6 +7,7 @@ import com.lambstat.module.webserver.resource.UserResource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.server.ServerProperties;
 
 
 public class JettyEndpointListener extends AbstractEndpointListener {
@@ -34,8 +35,8 @@ public class JettyEndpointListener extends AbstractEndpointListener {
         );
         jerseyServlet.setInitOrder(0);
         jerseyServlet.setInitParameter(
-                "jersey.config.server.provider.classnames",
-                UserResource.class.getCanonicalName()
+                ServerProperties.PROVIDER_PACKAGES,
+                UserResource.class.getPackage().getName()
         );
 
         try {
