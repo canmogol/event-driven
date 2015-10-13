@@ -1,6 +1,7 @@
 package com.lambstat.module.zmq.listener;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.lambstat.core.event.Event;
 import com.lambstat.core.event.UserLoginSuccessfulEvent;
 import com.lambstat.core.endpoint.AbstractEndpointListener;
 import com.lambstat.core.service.Service;
@@ -84,4 +85,9 @@ public class ZMQProtoBufferListener extends AbstractEndpointListener {
     public String getStatus() {
         return String.valueOf(running);
     }
+
+    @Override
+    public void handleEvent(Event event) {
+    }
+
 }

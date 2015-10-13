@@ -2,6 +2,7 @@ package com.lambstat.module.zmq.listener;
 
 import com.lambstat.core.event.BaseEvent;
 import com.lambstat.core.endpoint.AbstractEndpointListener;
+import com.lambstat.core.event.Event;
 import com.lambstat.core.service.Service;
 import com.lambstat.module.zmq.event.ZMQFailEvent;
 import com.lambstat.module.zmq.event.ZMQSuccessEvent;
@@ -101,4 +102,9 @@ public class ZMQJavaSerializeListener extends AbstractEndpointListener  {
     public String getStatus() {
         return String.valueOf(running);
     }
+
+    @Override
+    public void handleEvent(Event event) {
+    }
+
 }
