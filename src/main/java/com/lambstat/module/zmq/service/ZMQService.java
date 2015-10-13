@@ -1,7 +1,8 @@
 package com.lambstat.module.zmq.service;
 
+import com.lambstat.core.endpoint.AbstractEndpointListener;
+import com.lambstat.core.event.Event;
 import com.lambstat.core.event.ShutdownEvent;
-import com.lambstat.core.listener.AbstractEndpointListener;
 import com.lambstat.core.service.AbstractService;
 import com.lambstat.module.zmq.listener.ZMQJavaSerializeListener;
 import com.lambstat.module.zmq.listener.ZMQProtoBufferListener;
@@ -42,6 +43,14 @@ public class ZMQService extends AbstractService {
             } catch (IOException e) {
                 error("Could not close (zmq) listener: " + listener + " exception: " + e.getMessage());
             }
+        }
+    }
+
+    @Override
+    public void handleEvent(Event event) {
+        super.handleEvent(event);
+        for (AbstractEndpointListener listener : zmqListeners) {
+            listener.handleEvent(event);
         }
     }
 

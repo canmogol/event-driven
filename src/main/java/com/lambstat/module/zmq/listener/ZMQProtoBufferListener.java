@@ -2,7 +2,7 @@ package com.lambstat.module.zmq.listener;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.lambstat.core.event.UserLoginSuccessfulEvent;
-import com.lambstat.core.listener.AbstractEndpointListener;
+import com.lambstat.core.endpoint.AbstractEndpointListener;
 import com.lambstat.core.service.Service;
 import com.lambstat.core.util.ModelConverter;
 import com.lambstat.model.LambstatModels;

@@ -1,6 +1,6 @@
 package com.lambstat.module.webserver.listener;
 
-import com.lambstat.core.listener.AbstractEndpointListener;
+import com.lambstat.core.endpoint.AbstractEndpointListener;
 import com.lambstat.core.service.Service;
 
 
