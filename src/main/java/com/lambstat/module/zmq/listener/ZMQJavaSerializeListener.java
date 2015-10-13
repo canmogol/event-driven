@@ -1,7 +1,7 @@
 package com.lambstat.module.zmq.listener;
 
 import com.lambstat.core.event.BaseEvent;
-import com.lambstat.core.listener.AbstractEndpointListener;
+import com.lambstat.core.endpoint.AbstractEndpointListener;
 import com.lambstat.core.service.Service;
 import com.lambstat.module.zmq.event.ZMQFailEvent;
 import com.lambstat.module.zmq.event.ZMQSuccessEvent;

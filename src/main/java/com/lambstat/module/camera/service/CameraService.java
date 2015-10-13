@@ -3,7 +3,7 @@ package com.lambstat.module.camera.service;
 import com.lambstat.core.event.BaseEvent;
 import com.lambstat.core.event.Event;
 import com.lambstat.core.service.AbstractService;
-import com.lambstat.module.camera.event.CameraTestEvent;
+import com.lambstat.module.camera.event.CameraCaptureImageEvent;
 import com.lambstat.module.camera.event.CaptureImageEvent;
 import com.lambstat.module.camera.event.CaptureVideoEvent;
 import com.lambstat.module.disc.event.WriteToDiscEvent;
@@ -16,7 +16,7 @@ public class CameraService extends AbstractService {
         super(new HashSet<Class<? extends Event>>() {{
             add(CaptureImageEvent.class);
             add(CaptureVideoEvent.class);
-            add(CameraTestEvent.class);
+            add(CameraCaptureImageEvent.class);
         }});
     }
 
@@ -30,8 +30,8 @@ public class CameraService extends AbstractService {
         simulate();
     }
 
-    public void handleEvent(CameraTestEvent event) {
-        log("CameraTestEvent: " + event);
+    public void handleEvent(CameraCaptureImageEvent event) {
+        log("CameraCaptureImageEvent: " + event);
         simulate();
         BaseEvent e = new WriteToDiscEvent(
                 event,

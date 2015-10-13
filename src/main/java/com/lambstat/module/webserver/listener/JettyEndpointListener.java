@@ -1,7 +1,7 @@
 package com.lambstat.module.webserver.listener;
 
-import com.lambstat.core.listener.AbstractEndpointListener;
-import com.lambstat.core.listener.EndpointListener;
+import com.lambstat.core.endpoint.AbstractEndpointListener;
+import com.lambstat.core.endpoint.EndpointListener;
 import com.lambstat.core.service.Service;
 import com.lambstat.module.webserver.resource.UserResource;
 import org.eclipse.jetty.server.Server;

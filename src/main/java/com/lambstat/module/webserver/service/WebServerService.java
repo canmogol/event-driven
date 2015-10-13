@@ -2,7 +2,7 @@ package com.lambstat.module.webserver.service;
 
 import com.lambstat.core.event.Event;
 import com.lambstat.core.event.ShutdownEvent;
-import com.lambstat.core.listener.AbstractEndpointListener;
+import com.lambstat.core.endpoint.AbstractEndpointListener;
 import com.lambstat.core.service.AbstractService;
 import com.lambstat.core.service.Service;
 import com.lambstat.module.webserver.event.WebServerStatusRequestEvent;

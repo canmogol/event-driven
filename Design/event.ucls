@@ -118,7 +118,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="com.lambstat.module.camera.event.CameraTestEvent" project="event-driven" 
+  <class id="13" language="java" name="com.lambstat.module.camera.event.CameraCaptureImageEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/module/camera/event/CameraTestEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1173" y="771"/>    
