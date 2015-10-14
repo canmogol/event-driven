@@ -1,5 +1,6 @@
 package com.lambstat.core.service;
 
+import com.lambstat.core.util.Configuration;
 import com.lambstat.core.event.Event;
 
 import java.util.Set;
@@ -19,5 +20,9 @@ public interface Service extends Runnable {
     void unregisterEvents(Set<Class<? extends Event>> events);
 
     void setBroadcastService(Service service);
+
+    void setConfiguration(Configuration configuration);
+
+    Configuration getConfiguration();
 
 }

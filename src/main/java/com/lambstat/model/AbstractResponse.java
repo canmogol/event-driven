@@ -1,7 +1,5 @@
 package com.lambstat.model;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -31,8 +29,4 @@ public class AbstractResponse implements Response {
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
 }

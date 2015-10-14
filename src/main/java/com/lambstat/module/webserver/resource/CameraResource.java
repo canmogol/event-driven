@@ -27,11 +27,9 @@ public class CameraResource extends BaseResource {
         Future<Event> eventFuture = broadcast(event, FileAvailableEvent.class);
         try {
             // get method will block until the FileAvailableEvent available
-            //FileAvailableEvent eventResponse = (FileAvailableEvent) eventFuture.get();
-            eventFuture.get();
+            FileAvailableEvent eventResponse = (FileAvailableEvent) eventFuture.get();
             // return generated file name
-            //return eventResponse.getFileName();
-            return "OK";
+            return eventResponse.getFileName();
         } catch (InterruptedException | ExecutionException e) {
             error("execution exception while getting future, exception: " + e.getMessage());
         }

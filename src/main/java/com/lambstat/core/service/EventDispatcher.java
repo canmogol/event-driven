@@ -1,11 +1,12 @@
 package com.lambstat.core.service;
 
 import com.lambstat.core.event.*;
-import com.lambstat.module.camera.service.CameraService;
-import com.lambstat.module.disc.service.DiscService;
-import com.lambstat.module.webserver.service.WebServerService;
-import com.lambstat.module.zmq.service.ZMQService;
+import com.lambstat.core.util.Configuration;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +17,7 @@ public class EventDispatcher extends AbstractService {
     private Map<Class<? extends Event>, Set<Service>> eventServiceMap = new ConcurrentHashMap<>();
     private Set<Service> services = new HashSet<>();
     private HashSet<Class<? extends Service>> serviceClasses;
+    private Configuration configuration;
 
     public EventDispatcher() {
         super(new HashSet<Class<? extends Event>>() {{
@@ -35,13 +37,17 @@ public class EventDispatcher extends AbstractService {
     }
 
     private void discoverServices() {
-        // discover service classes, xml, properties, arguments, classpath etc.
-        serviceClasses = new HashSet<Class<? extends Service>>() {{
-            add(CameraService.class);
-            add(DiscService.class);
-            add(ZMQService.class);
-            add(WebServerService.class);
-        }};
+        // discover service classes
+        try {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("configuration.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            configuration = (Configuration) jaxbUnmarshaller.unmarshal(inputStream);
+            serviceClasses = new HashSet<>();
+            serviceClasses.addAll(configuration.getServices());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
     private Set<Service> registerServices() {
@@ -49,6 +55,7 @@ public class EventDispatcher extends AbstractService {
             try {
                 Service service = sClass.newInstance();
                 service.setBroadcastService(this);
+                service.setConfiguration(configuration);
                 Set<Class<? extends Event>> eventsToListen = service.getEventsToListen();
                 for (Class<? extends Event> eventClass : eventsToListen) {
                     if (!eventServiceMap.containsKey(eventClass)) {

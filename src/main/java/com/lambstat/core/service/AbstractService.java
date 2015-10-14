@@ -1,6 +1,7 @@
 package com.lambstat.core.service;
 
 
+import com.lambstat.core.util.Configuration;
 import com.lambstat.core.event.Event;
 import com.lambstat.core.event.EventsRegisteredEvent;
 import com.lambstat.core.event.EventsUnregisteredEvent;
@@ -24,6 +25,7 @@ public abstract class AbstractService implements Service {
     private BlockingQueue<Event> queue = new LinkedBlockingQueue<>();
     private Service broadcastService;
     private boolean running = true;
+    private Configuration configuration;
 
     public AbstractService(Set<Class<? extends Event>> eventsToListen) {
         if (eventsToListen != null) {
@@ -78,6 +80,15 @@ public abstract class AbstractService implements Service {
     @Override
     public void setBroadcastService(Service service) {
         this.broadcastService = service;
+    }
+
+    @Override
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
     @Override
