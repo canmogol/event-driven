@@ -33,6 +33,7 @@ public class JettyEndpointListener extends AbstractEndpointListener {
                 org.glassfish.jersey.servlet.ServletContainer.class,
                 "/*"
         );
+        jerseyServlet.setAsyncSupported(true);
         jerseyServlet.setInitOrder(0);
         jerseyServlet.setInitParameter(
                 ServerProperties.PROVIDER_PACKAGES,

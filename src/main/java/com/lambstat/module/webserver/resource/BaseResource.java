@@ -15,8 +15,12 @@ public abstract class BaseResource {
 
     @javax.ws.rs.core.Context
     private ServletConfig context;
-    private final ExecutorService pool = Executors.newFixedThreadPool(10);
+    private final ExecutorService pool = Executors.newSingleThreadExecutor();
     private Logger L = Logger.getLogger(getClass().getSimpleName());
+
+    public EndpointListener getEndpointListener() {
+        return (AbstractEndpointListener) context.getServletContext().getAttribute(EndpointListener.class.getName());
+    }
 
     /**
      * Broadcast event via web server, web server will deliver this event to its own service which is in the event loop
@@ -25,25 +29,26 @@ public abstract class BaseResource {
         getEndpointListener().broadcast(event);
     }
 
-    public EndpointListener getEndpointListener() {
-        return (AbstractEndpointListener) context.getServletContext().getAttribute(EndpointListener.class.getName());
-    }
-
-    Future<Event> broadcast(BaseEvent event, Class<? extends Event> eventClass) {
-        return pool.submit(new Callable<Event>() {
+    <T extends Event> Future<T> broadcast(BaseEvent event, Class<T> eventClass) {
+        return pool.submit(new Callable<T>() {
             private BlockingQueue<Event> blockingQueue = new LinkedBlockingQueue<>();
 
             @Override
-            public Event call() throws Exception {
+            @SuppressWarnings("unchecked")
+            public T call() throws Exception {
                 getEndpointListener().broadcast(event, eventClass, new EndpointObserver<Event>() {
                     @Override
                     public void handleEvent(Event event) {
                         blockingQueue.add(event);
                     }
                 });
-                return blockingQueue.take();
+                return (T) blockingQueue.take();
             }
         });
+    }
+
+    void async(Runnable runnable) {
+        pool.execute(runnable);
     }
 
     public void log(String log) {
