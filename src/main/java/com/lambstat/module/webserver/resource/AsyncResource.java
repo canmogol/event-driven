@@ -1,8 +1,10 @@
 package com.lambstat.module.webserver.resource;
 
 
+import com.lambstat.model.LoginResponse;
+
 import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
@@ -13,7 +15,7 @@ import javax.ws.rs.container.Suspended;
 @Consumes({"application/json"})
 public class AsyncResource extends BaseResource {
 
-    @POST
+    @GET
     @Path("/ok")
     public void ok(@Suspended final AsyncResponse asyncResponse) {
         System.out.println("ok method call begin");
@@ -25,7 +27,10 @@ public class AsyncResource extends BaseResource {
                 error("Could not sleep, e: " + e.getMessage());
             }
             System.out.println("woke up");
-            asyncResponse.resume("OK");
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setLogged(true);
+            loginResponse.setName("john");
+            asyncResponse.resume(loginResponse);
         });
         System.out.println("ok method call end");
     }
