@@ -7,6 +7,9 @@ import java.util.Set;
 
 public interface Service extends Runnable {
 
+    @HandleMethod
+    void handleEvent(Event event);
+
     void dropEvents();
 
     void notify(Event e);

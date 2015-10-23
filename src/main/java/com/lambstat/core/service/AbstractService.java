@@ -1,11 +1,11 @@
 package com.lambstat.core.service;
 
 
-import com.lambstat.core.util.Configuration;
 import com.lambstat.core.event.Event;
 import com.lambstat.core.event.EventsRegisteredEvent;
 import com.lambstat.core.event.EventsUnregisteredEvent;
 import com.lambstat.core.event.ShutdownEvent;
+import com.lambstat.core.util.Configuration;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 public abstract class AbstractService implements Service {
 
+    private static Method handleMethod = null;
     private Logger L = Logger.getLogger(getClass().getSimpleName());
     private Set<Class<? extends Event>> eventsToListen = new HashSet<Class<? extends Event>>() {{
         add(ShutdownEvent.class);
@@ -31,6 +32,18 @@ public abstract class AbstractService implements Service {
         if (eventsToListen != null) {
             getEventsToListen().addAll(eventsToListen);
         }
+    }
+
+    public Method getHandleMethod() {
+        if (handleMethod == null) {
+            for (Method method : Service.class.getMethods()) {
+                if (method.getAnnotation(HandleMethod.class) != null) {
+                    handleMethod = method;
+                    break;
+                }
+            }
+        }
+        return handleMethod;
     }
 
     public void handleEvent(Event baseEvent) {
@@ -101,7 +114,7 @@ public abstract class AbstractService implements Service {
                     break;
                 }
                 try {
-                    Method method = this.getClass().getMethod("handleEvent", baseEvent.getClass());
+                    Method method = this.getClass().getMethod(getHandleMethod().getName(), baseEvent.getClass());
                     if (!method.isAccessible()) {
                         method.setAccessible(true);
                     }
