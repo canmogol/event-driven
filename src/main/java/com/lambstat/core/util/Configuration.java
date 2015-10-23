@@ -12,6 +12,7 @@ public class Configuration {
 
     private List<Class<? extends Service>> services = new ArrayList<>();
     private Class<? extends EndpointListener> webServer;
+    private int webServerPort;
 
     public List<Class<? extends Service>> getServices() {
         return services;
@@ -29,4 +30,11 @@ public class Configuration {
         this.webServer = webServer;
     }
 
+    public int getWebServerPort() {
+        return webServerPort;
+    }
+
+    public void setWebServerPort(int webServerPort) {
+        this.webServerPort = webServerPort;
+    }
 }

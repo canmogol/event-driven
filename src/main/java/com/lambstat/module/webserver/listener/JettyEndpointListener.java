@@ -26,7 +26,7 @@ public class JettyEndpointListener extends AbstractEndpointListener {
         context.setContextPath("/");
         context.setAttribute(EndpointListener.class.getName(), this);
 
-        jettyServer = new Server(8080);
+        jettyServer = new Server(getService().getConfiguration().getWebServerPort());
         jettyServer.setHandler(context);
 
         ServletHolder jerseyServlet = context.addServlet(
@@ -60,4 +60,5 @@ public class JettyEndpointListener extends AbstractEndpointListener {
     public String getStatus() {
         return jettyServer.getState();
     }
+
 }

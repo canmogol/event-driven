@@ -49,4 +49,7 @@ public abstract class AbstractEndpointListener implements EndpointListener {
         L.info("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
     }
 
+    public Service getService() {
+        return service;
+    }
 }

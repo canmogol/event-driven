@@ -5,4 +5,5 @@
     <services>com.lambstat.module.zmq.service.ZMQService</services>
     <services>com.lambstat.module.webserver.service.WebServerService</services>
     <webServer>com.lambstat.module.webserver.listener.JettyEndpointListener</webServer>
+    <webServerPort>9088</webServerPort>
 </configuration>

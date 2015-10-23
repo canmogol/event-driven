@@ -1,6 +1,7 @@
 package com.lambstat.core.endpoint;
 
 import com.lambstat.core.event.Event;
+import com.lambstat.core.service.Service;
 
 import java.io.Closeable;
 
@@ -12,6 +13,8 @@ public interface EndpointListener extends Closeable, Runnable {
 
     void broadcast(Event baseEvent);
 
-    public void broadcast(Event baseEvent, Class<? extends Event> eventClass, EndpointObserver<Event> endpointObserver);
+    void broadcast(Event baseEvent, Class<? extends Event> eventClass, EndpointObserver<Event> endpointObserver);
+
+    Service getService();
 
 }

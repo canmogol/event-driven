@@ -1,8 +1,8 @@
 package com.lambstat.module.webserver.service;
 
+import com.lambstat.core.endpoint.AbstractEndpointListener;
 import com.lambstat.core.event.Event;
 import com.lambstat.core.event.ShutdownEvent;
-import com.lambstat.core.endpoint.AbstractEndpointListener;
 import com.lambstat.core.service.AbstractService;
 import com.lambstat.core.service.Service;
 import com.lambstat.module.webserver.event.WebServerStatusRequestEvent;
@@ -28,15 +28,14 @@ public class WebServerService extends AbstractService {
 
     @Override
     public void run() {
-        String currentWebServerImplementation = /*GET THIS FROM PROPERTIES/XML/CLASSPATH ETC.*/"com.lambstat.module.webserver.listener.JettyEndpointListener";
         try {
-            Constructor constructor = Class.forName(currentWebServerImplementation).getConstructor(Service.class);
+            Constructor constructor = getConfiguration().getWebServer().getConstructor(Service.class);
             webServerListener = (AbstractEndpointListener) constructor.newInstance(this);
             webServerListener = new JettyEndpointListener(this);
             listenerThread = new Thread(webServerListener);
             listenerThread.start();
-        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            log("Could not create class: " + currentWebServerImplementation + " exception: " + e.getMessage());
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            log("Could not create class: " + getConfiguration().getWebServer() + " exception: " + e.getMessage());
         }
         super.run();
     }
