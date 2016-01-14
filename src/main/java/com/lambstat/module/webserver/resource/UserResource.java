@@ -4,6 +4,7 @@ import com.lambstat.core.event.UserLoginSuccessfulEvent;
 import com.lambstat.model.LoginRequest;
 import com.lambstat.model.LoginResponse;
 import com.lambstat.model.LogoutResponse;
+import com.lambstat.module.webserver.log.UserResourceLogger;
 
 import javax.ws.rs.*;
 
@@ -12,24 +13,26 @@ import javax.ws.rs.*;
 @Consumes({"application/json"})
 public class UserResource extends BaseResource {
 
+    private UserResourceLogger logger = new UserResourceLogger();
+
     /**
      * @return LoginResponse is a Response type
      */
     @POST
     @Path("/login")
     public LoginResponse login(LoginRequest loginRequest) {
-        log("another user login REQUEST: " + loginRequest);
+        logger.anotherUserLoginRequest(loginRequest.getUsername());
         // create a response
         LoginResponse loginResponse = new LoginResponse();
         // check if credentials are correct
         if ("john".equals(loginRequest.getUsername()) && "123".equals(loginRequest.getPassword())) {
             loginResponse.setLogged(true);
             loginResponse.setName("john");
-            log("user logged in, will broadcast event");
+            logger.userLoggedIn(loginRequest.getUsername());
             // broadcast this user's login event
             broadcast(new UserLoginSuccessfulEvent(loginRequest.getUsername()));
         }
-        log("another user login RESPONSE: " + loginResponse);
+        logger.willReturnLoginResponse(loginRequest.getUsername(), loginResponse.isLogged());
         //return response
         return loginResponse;
     }

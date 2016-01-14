@@ -14,6 +14,4 @@ public abstract class BaseLogger {
         getLogger().severe("[" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
     }
 
-
-
 }

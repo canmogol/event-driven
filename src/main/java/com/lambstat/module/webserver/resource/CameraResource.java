@@ -4,6 +4,7 @@ import com.lambstat.core.event.BaseEvent;
 import com.lambstat.model.ShutdownRequest;
 import com.lambstat.module.camera.event.CameraCaptureImageEvent;
 import com.lambstat.module.disk.event.FileAvailableEvent;
+import com.lambstat.module.webserver.log.CameraResourceLogger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -16,6 +17,8 @@ import java.util.concurrent.Future;
 @Produces({"application/json"})
 @Consumes({"application/json"})
 public class CameraResource extends BaseResource {
+
+    private CameraResourceLogger logger = new CameraResourceLogger();
 
     @POST
     @Path("/cameraTest")
@@ -30,7 +33,7 @@ public class CameraResource extends BaseResource {
             // return generated file name
             return eventResponse.getFileName();
         } catch (InterruptedException | ExecutionException e) {
-            error("execution exception while getting future, exception: " + e.getMessage());
+            logger.futureExecutionError(e.getMessage());
         }
         // return failed
         return "FAILED";

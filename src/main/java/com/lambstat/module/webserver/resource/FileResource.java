@@ -1,5 +1,7 @@
 package com.lambstat.module.webserver.resource;
 
+import com.lambstat.module.webserver.log.FileResourceLogger;
+
 import javax.ws.rs.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +12,8 @@ import java.io.InputStreamReader;
 @Produces({"application/json"})
 @Consumes({"application/json"})
 public class FileResource extends BaseResource {
+
+    private FileResourceLogger logger = new FileResourceLogger();
 
     @GET
     @Path("/file/{name}")
@@ -33,7 +37,7 @@ public class FileResource extends BaseResource {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    log("Could not close reader: " + br + " exception: " + e.getMessage());
+                    logger.couldNotCloseReader(e.getMessage());
                 }
             }
         }

@@ -7,16 +7,13 @@ import com.lambstat.core.event.BaseEvent;
 import com.lambstat.core.event.Event;
 
 import javax.servlet.ServletConfig;
-import java.util.Date;
 import java.util.concurrent.*;
-import java.util.logging.Logger;
 
 public abstract class BaseResource {
 
     @javax.ws.rs.core.Context
     private ServletConfig context;
     private final ExecutorService pool = Executors.newSingleThreadExecutor();
-    private Logger L = Logger.getLogger(getClass().getSimpleName());
 
     public EndpointListener getEndpointListener() {
         return (AbstractEndpointListener) context.getServletContext().getAttribute(EndpointListener.class.getName());
@@ -49,14 +46,6 @@ public abstract class BaseResource {
 
     void async(Runnable runnable) {
         pool.execute(runnable);
-    }
-
-    public void log(String log) {
-        L.info("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
-    }
-
-    public void error(String log) {
-        L.severe("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
     }
 
 }

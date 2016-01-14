@@ -1,12 +1,11 @@
 package com.lambstat.module.webserver.resource;
 
 
+import com.lambstat.model.LoginRequest;
 import com.lambstat.model.LoginResponse;
+import com.lambstat.module.webserver.log.AsyncResourceLogger;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 
@@ -15,24 +14,33 @@ import javax.ws.rs.container.Suspended;
 @Consumes({"application/json"})
 public class AsyncResource extends BaseResource {
 
-    @GET
+    private AsyncResourceLogger logger = new AsyncResourceLogger();
+
+    @POST
     @Path("/ok")
-    public void ok(@Suspended final AsyncResponse asyncResponse) {
-        System.out.println("ok method call begin");
+    public void ok(LoginRequest loginRequest, @Suspended final AsyncResponse asyncResponse) {
+        logger.okMethodCalled();
         async(() -> {
-            System.out.println("will sleep");
+            logger.willSleep();
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {
-                error("Could not sleep, e: " + e.getMessage());
+                logger.couldNotSleep(e.getMessage());
             }
-            System.out.println("woke up");
+            logger.wokeUp();
             LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setLogged(true);
-            loginResponse.setName("john");
+            if ("john".equals(loginRequest.getUsername()) && "123".equals(loginRequest.getPassword())) {
+                loginResponse.setLogged(true);
+                loginResponse.setName("john");
+                logger.loginSuccessful(loginRequest.getUsername());
+            } else {
+                loginResponse.setLogged(false);
+                logger.couldNotLoggedIn(loginRequest.getUsername());
+            }
+            logger.willReturnResponse(loginRequest.getUsername(), loginResponse.isLogged());
             asyncResponse.resume(loginResponse);
         });
-        System.out.println("ok method call end");
+        logger.okMethodCallEnd();
     }
 
 }
