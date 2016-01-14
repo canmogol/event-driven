@@ -6,11 +6,14 @@ import com.lambstat.core.service.AbstractService;
 import com.lambstat.module.camera.event.CameraCaptureImageEvent;
 import com.lambstat.module.camera.event.CaptureImageEvent;
 import com.lambstat.module.camera.event.CaptureVideoEvent;
-import com.lambstat.module.disc.event.WriteToDiscEvent;
+import com.lambstat.module.camera.log.CameraServiceLogger;
+import com.lambstat.module.disk.event.WriteToDiskEvent;
 
 import java.util.HashSet;
 
 public class CameraService extends AbstractService {
+
+    private CameraServiceLogger logger = new CameraServiceLogger();
 
     public CameraService() {
         super(new HashSet<Class<? extends Event>>() {{
@@ -21,34 +24,34 @@ public class CameraService extends AbstractService {
     }
 
     public void handleEvent(CaptureImageEvent event) {
-        log("CaptureImageEvent: " + event);
+        logger.willHandleImageCaptureEvent(event.toString());
         simulate();
     }
 
     public void handleEvent(CaptureVideoEvent event) {
-        log("CaptureVideoEvent: " + event);
+        logger.willHandleVideoCaptureEvent(event.toString());
         simulate();
     }
 
     public void handleEvent(CameraCaptureImageEvent event) {
-        log("CameraCaptureImageEvent: " + event);
+        logger.willHandleCameraCaptureEvent(event.toString());
         simulate();
-        BaseEvent e = new WriteToDiscEvent(
+        BaseEvent e = new WriteToDiskEvent(
                 event,
                 new byte[]{1, 2, 3, 4, 5},
                 "image0123.jpg"
         );
-        log("will send WriteToDiscEvent: " + e);
+        logger.willSendWriteToDiskEvent(e.toString());
         broadcast(e);
     }
 
     private void simulate() {
         try {
-            log("simulating work");
+            logger.simulatingWork();
             Thread.sleep(3000);
-            log("work done");
+            logger.workDone();
         } catch (InterruptedException e) {
-            error("Could not sleep, exception: " + e.getMessage());
+            logger.couldNotSleep(e.getMessage());
         }
     }
 

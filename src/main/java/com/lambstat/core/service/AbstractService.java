@@ -5,21 +5,20 @@ import com.lambstat.core.event.Event;
 import com.lambstat.core.event.EventsRegisteredEvent;
 import com.lambstat.core.event.EventsUnregisteredEvent;
 import com.lambstat.core.event.ShutdownEvent;
+import com.lambstat.core.log.AbstractServiceLogger;
 import com.lambstat.core.util.Configuration;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Logger;
 
 public abstract class AbstractService implements Service {
 
     private static Method handleMethod = null;
-    private Logger L = Logger.getLogger(getClass().getSimpleName());
+    private AbstractServiceLogger logger = new AbstractServiceLogger(getClass().getName());
     private Set<Class<? extends Event>> eventsToListen = new HashSet<Class<? extends Event>>() {{
         add(ShutdownEvent.class);
     }};
@@ -47,7 +46,7 @@ public abstract class AbstractService implements Service {
     }
 
     public void handleEvent(Event baseEvent) {
-        log("Generic Event, will do nothing, baseEvent: " + baseEvent);
+        logger.genericEventFired(baseEvent.toString());
     }
 
     @Override
@@ -86,7 +85,7 @@ public abstract class AbstractService implements Service {
         try {
             queue.put(baseEvent);
         } catch (InterruptedException e) {
-            error("Could not add event to queue, event: " + baseEvent + " exception: " + e.getMessage());
+            logger.couldNotAddEventToQueue(baseEvent.toString(), e.getMessage());
         }
     }
 
@@ -120,17 +119,17 @@ public abstract class AbstractService implements Service {
                     }
                     method.invoke(this, baseEvent);
                 } catch (IllegalAccessException | InvocationTargetException e) {
-                    error("Could not access/invoke method, exception: " + e.getMessage());
+                    logger.couldNotAccessMethod(e.getMessage());
                 } catch (NoSuchMethodException e) {
                     handleEvent(baseEvent);
                 }
             } catch (InterruptedException e) {
                 // interrupted, doing down
-                error("service interrupted, exception: " + e.getMessage());
+                logger.serviceInterrupted(e.getMessage());
                 break;
             }
         }
-        log("shutdown");
+        logger.serviceIsShutdown();
     }
 
     public void handleEvent(ShutdownEvent event) {
@@ -138,16 +137,8 @@ public abstract class AbstractService implements Service {
         Set<Class<? extends Event>> allEvents = new HashSet<>();
         allEvents.addAll(getEventsToListen());
         unregisterEvents(allEvents);
-        log("Shutdown Event, will shutdown this service, event: " + event);
+        logger.shutdownServiceEvent(event.toString());
         running = false;// will break the loop at while or if condition
-    }
-
-    public void log(String log) {
-        L.info("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
-    }
-
-    public void error(String log) {
-        L.severe("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + getClass().getSimpleName() + "] " + log);
     }
 
 }

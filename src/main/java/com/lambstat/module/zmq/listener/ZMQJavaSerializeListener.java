@@ -1,17 +1,20 @@
 package com.lambstat.module.zmq.listener;
 
-import com.lambstat.core.event.BaseEvent;
 import com.lambstat.core.endpoint.AbstractEndpointListener;
+import com.lambstat.core.event.BaseEvent;
 import com.lambstat.core.service.Service;
 import com.lambstat.module.zmq.event.ZMQFailEvent;
 import com.lambstat.module.zmq.event.ZMQSuccessEvent;
+import com.lambstat.module.zmq.log.ZMQJavaSerializeLogger;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
 import java.io.*;
+import java.nio.channels.ClosedChannelException;
 
-public class ZMQJavaSerializeListener extends AbstractEndpointListener  {
+public class ZMQJavaSerializeListener extends AbstractEndpointListener {
 
+    private ZMQJavaSerializeLogger logger = new ZMQJavaSerializeLogger();
     private boolean running = true;
     private String connectionString = "tcp://*:9555";
     private ZMQ.Context context;
@@ -23,15 +26,15 @@ public class ZMQJavaSerializeListener extends AbstractEndpointListener  {
 
     @Override
     public void run() {
-        log("starting context");
+        logger.start();
         context = ZMQ.context(1);
         //  Socket to talk to clients
         responder = context.socket(ZMQ.REP);
         responder.bind(connectionString);
-        log("listening at " + connectionString);
+        logger.listening(connectionString);
 
         while (running && !Thread.currentThread().isInterrupted()) {
-            log("waiting for next request from client");
+            logger.waitingForClients();
 
             byte[] bytes = new byte[0];
             try {
@@ -41,18 +44,18 @@ public class ZMQJavaSerializeListener extends AbstractEndpointListener  {
                 if (!running) {
                     break;
                 } else {
-                    log("Could zmq got exception while running, exception: " + e.getMessage());
+                    logger.zmqError(e.getMessage());
                 }
             }
 
             Object object = byteToObject(bytes);
             if (object != null && object instanceof BaseEvent) {
-                log("broadcast event");
+                logger.broadcastEvent();
                 broadcast((BaseEvent) object);
                 // Send reply back to client
                 responder.send(objectToByte(new ZMQSuccessEvent()), 0);
             } else {
-                log("unknown object, expecting event, object: " + object);
+                logger.unknownObject(object);
                 // Send reply back to client
                 responder.send(objectToByte(new ZMQFailEvent()), 0);
             }
@@ -73,7 +76,7 @@ public class ZMQJavaSerializeListener extends AbstractEndpointListener  {
             out.writeObject(baseEvent);
             bytes = bos.toByteArray();
         } catch (IOException e) {
-            log("Could not write event to bytes, event: " + baseEvent + " exception: " + e.getMessage());
+            logger.couldNotWriteEvent(baseEvent.toString(), e.getMessage());
         }
         return bytes;
     }
@@ -86,15 +89,25 @@ public class ZMQJavaSerializeListener extends AbstractEndpointListener  {
         ) {
             object = in.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            log("Could not read object from #bytes: " + bytes.length + " exception: " + e.getMessage());
+            logger.couldNotReadObject(bytes.length, e.getMessage());
         }
         return object;
     }
 
-    public void close() throws IOException{
+    public void close() throws IOException {
         running = false;
         responder.close();
-        context.term();
+        try {
+            context.close();
+        } catch (Exception e) {
+            if (!(e instanceof zmq.ZError.IOException)) {
+                throw e;
+            }else if(e.getCause() != null && e.getCause() instanceof ClosedChannelException){
+                logger.channelAlreadyClosed(e.getCause().getMessage());
+            }else{
+                logger.zmqIOError(e.getMessage());
+            }
+        }
     }
 
     @Override

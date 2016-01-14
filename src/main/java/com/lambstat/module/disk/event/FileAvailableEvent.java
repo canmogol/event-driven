@@ -1,4 +1,4 @@
-package com.lambstat.module.disc.event;
+package com.lambstat.module.disk.event;
 
 import com.lambstat.core.event.BaseEvent;
 import com.lambstat.core.event.Event;

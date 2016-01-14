@@ -1,6 +1,7 @@
 package com.lambstat.core.service;
 
 import com.lambstat.core.event.*;
+import com.lambstat.core.log.EventDispatcherLogger;
 import com.lambstat.core.util.Configuration;
 
 import javax.xml.bind.JAXBContext;
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EventDispatcher extends AbstractService {
 
+    private EventDispatcherLogger logger = new EventDispatcherLogger();
     private Map<Class<? extends Event>, Set<Service>> eventServiceMap = new ConcurrentHashMap<>();
     private Set<Service> services = new HashSet<>();
     private HashSet<Class<? extends Service>> serviceClasses;
@@ -46,7 +48,7 @@ public class EventDispatcher extends AbstractService {
             serviceClasses = new HashSet<>();
             serviceClasses.addAll(configuration.getServices());
         } catch (JAXBException e) {
-            e.printStackTrace();
+            logger.couldNotDiscoverServices(e.getMessage());
         }
     }
 
@@ -68,7 +70,7 @@ public class EventDispatcher extends AbstractService {
                 }
                 services.add(service);
             } catch (InstantiationException | IllegalAccessException e) {
-                error("Could not create service: " + sClass + " exception: " + e.getMessage());
+                logger.couldNotCreateService(sClass.toString(), e.getMessage());
             }
         }
         return services;
@@ -81,20 +83,18 @@ public class EventDispatcher extends AbstractService {
                 try {
                     service.notify(event);
                 } catch (Throwable pikachu) {
-                    error("Could not notify service: " + service + " exception: " + pikachu.getMessage());
+                    logger.couldNotNotifyService(service.toString(), pikachu.getMessage());
                 }
             }
         } else {
-            log("!!! THERE IS NO REGISTERED SERVICE FOR THIS EVENT: " + event);
+            logger.noEventHandler(event.toString());
         }
     }
 
     public void handleEvent(ShutdownImmediatelyEvent event) {
         // clear all events for services registered to ShutdownEvent
         if (eventServiceMap.containsKey(ShutdownEvent.class)) {
-            for (Service service : eventServiceMap.get(ShutdownEvent.class)) {
-                service.dropEvents();
-            }
+            eventServiceMap.get(ShutdownEvent.class).forEach(Service::dropEvents);
         }
         // notify ShutdownEvent
         handleEvent(event.getShutdownEvent());
@@ -123,10 +123,10 @@ public class EventDispatcher extends AbstractService {
 
     public void handleEvent(EventsUnregisteredEvent event) {
         // remove this service for each of the event types
-        for (Class<? extends Event> eventClass : event.getEvents()) {
+        event.getEvents().forEach(eventClass -> {
             if (eventServiceMap.containsKey(eventClass)) {
                 eventServiceMap.get(eventClass).remove(event.getService());
             }
-        }
+        });
     }
 }

@@ -3,7 +3,7 @@ package com.lambstat.module.webserver.resource;
 import com.lambstat.core.event.BaseEvent;
 import com.lambstat.model.ShutdownRequest;
 import com.lambstat.module.camera.event.CameraCaptureImageEvent;
-import com.lambstat.module.disc.event.FileAvailableEvent;
+import com.lambstat.module.disk.event.FileAvailableEvent;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <configuration>
     <services>com.lambstat.module.camera.service.CameraService</services>
-    <services>com.lambstat.module.disc.service.DiscService</services>
+    <services>com.lambstat.module.disk.service.DiskService</services>
     <services>com.lambstat.module.zmq.service.ZMQService</services>
     <services>com.lambstat.module.webserver.service.WebServerService</services>
     <webServer>com.lambstat.module.webserver.listener.JettyEndpointListener</webServer>

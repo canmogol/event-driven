@@ -1,18 +1,18 @@
-package com.lambstat.module.disc.event;
+package com.lambstat.module.disk.event;
 
 import com.lambstat.core.event.BaseEvent;
 import com.lambstat.core.event.Event;
 
-public class WriteToDiscEvent extends BaseEvent {
+public class WriteToDiskEvent extends BaseEvent {
 
     private final byte[] bytes;
     private final String fileName;
 
-    public WriteToDiscEvent(byte[] bytes, String fileName) {
+    public WriteToDiskEvent(byte[] bytes, String fileName) {
         this(null, bytes, fileName);
     }
 
-    public WriteToDiscEvent(Event parent, byte[] bytes, String fileName) {
+    public WriteToDiskEvent(Event parent, byte[] bytes, String fileName) {
         super(parent);
         this.bytes = bytes;
         this.fileName = fileName;

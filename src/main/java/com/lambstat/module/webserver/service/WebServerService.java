@@ -8,6 +8,7 @@ import com.lambstat.core.service.Service;
 import com.lambstat.module.webserver.event.WebServerStatusRequestEvent;
 import com.lambstat.module.webserver.event.WebServerStatusResponseEvent;
 import com.lambstat.module.webserver.listener.JettyEndpointListener;
+import com.lambstat.module.webserver.log.WebServerServiceLogger;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -17,8 +18,8 @@ import java.util.HashSet;
 
 public class WebServerService extends AbstractService {
 
+    private WebServerServiceLogger logger = new WebServerServiceLogger();
     private AbstractEndpointListener webServerListener;
-    private Thread listenerThread;
 
     public WebServerService() {
         super(new HashSet<Class<? extends Event>>() {{
@@ -32,16 +33,16 @@ public class WebServerService extends AbstractService {
             Constructor constructor = getConfiguration().getWebServer().getConstructor(Service.class);
             webServerListener = (AbstractEndpointListener) constructor.newInstance(this);
             webServerListener = new JettyEndpointListener(this);
-            listenerThread = new Thread(webServerListener);
+            Thread listenerThread = new Thread(webServerListener);
             listenerThread.start();
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            log("Could not create class: " + getConfiguration().getWebServer() + " exception: " + e.getMessage());
+            logger.couldNotCreateClass(getConfiguration().getWebServer().getName(), e.getMessage());
         }
         super.run();
     }
 
     public void handleEvent(WebServerStatusRequestEvent event) {
-        log("WebServerStatusRequestEvent: " + event);
+        logger.willHandleWebServerEvent(event.toString());
         WebServerStatusResponseEvent e = new WebServerStatusResponseEvent(webServerListener.getStatus());
         broadcast(e);
     }
@@ -52,7 +53,7 @@ public class WebServerService extends AbstractService {
         try {
             webServerListener.close();
         } catch (IOException e) {
-            log("Could not close web server listener: " + webServerListener + " exception: " + e.getMessage());
+            logger.couldNotCloseWebServer(webServerListener.getClass().getName(), e.getMessage());
         }
     }
 

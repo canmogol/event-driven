@@ -6,14 +6,15 @@ import com.lambstat.core.event.ShutdownEvent;
 import com.lambstat.core.service.AbstractService;
 import com.lambstat.module.zmq.listener.ZMQJavaSerializeListener;
 import com.lambstat.module.zmq.listener.ZMQProtoBufferListener;
+import com.lambstat.module.zmq.log.ZMQServiceLogger;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 public class ZMQService extends AbstractService {
 
+    private ZMQServiceLogger logger = new ZMQServiceLogger();
     private List<AbstractEndpointListener> zmqListeners = new ArrayList<>();
 
     public ZMQService() {
@@ -40,8 +41,8 @@ public class ZMQService extends AbstractService {
         for (AbstractEndpointListener listener : zmqListeners) {
             try {
                 listener.close();
-            } catch (IOException e) {
-                error("Could not close (zmq) listener: " + listener + " exception: " + e.getMessage());
+            } catch (Exception e) {
+                logger.couldNotCloseListener(listener.getClass().getSimpleName(), e.getMessage());
             }
         }
     }

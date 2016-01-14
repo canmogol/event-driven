@@ -1,18 +1,20 @@
 package com.lambstat.module.zmq.listener;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.lambstat.core.event.UserLoginSuccessfulEvent;
 import com.lambstat.core.endpoint.AbstractEndpointListener;
+import com.lambstat.core.event.UserLoginSuccessfulEvent;
 import com.lambstat.core.service.Service;
 import com.lambstat.core.util.ModelConverter;
 import com.lambstat.model.LambstatModels;
 import com.lambstat.model.LoginRequest;
 import com.lambstat.model.LoginResponse;
+import com.lambstat.module.zmq.log.ZMQProtoBufferLogger;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
 public class ZMQProtoBufferListener extends AbstractEndpointListener {
 
+    private ZMQProtoBufferLogger logger = new ZMQProtoBufferLogger();
     private boolean running = true;
     private String connectionString = "tcp://*:9666";
     private ZMQ.Context context;
@@ -24,26 +26,31 @@ public class ZMQProtoBufferListener extends AbstractEndpointListener {
 
     @Override
     public void run() {
-        log("starting context");
+        logger.start();
         context = ZMQ.context(1);
         //  Socket to talk to clients
         responder = context.socket(ZMQ.REP);
         responder.bind(connectionString);
-        log("listening at " + connectionString);
+        logger.listening(connectionString);
 
         while (running && !Thread.currentThread().isInterrupted()) {
-            log("waiting for next request from client");
+            logger.waitingForClients();
 
             LambstatModels.loginRequest loginRequest = null;
             try {
                 // Wait for next request from the client
                 byte[] bytes = responder.recv(0);
+                String requestType = new String(bytes);
+                logger.nextRequestType(requestType);
+                while (responder.hasReceiveMore()) {
+                    bytes = responder.recv(0);
+                }
                 loginRequest = LambstatModels.loginRequest.parseFrom(bytes);
             } catch (ZMQException | InvalidProtocolBufferException e) {
                 if (!running) {
                     break;
                 } else {
-                    log("ZMQ got exception while running, exception: " + e.getMessage());
+                    logger.zmqError(e.getMessage());
                 }
             }
 
@@ -52,18 +59,18 @@ public class ZMQProtoBufferListener extends AbstractEndpointListener {
 
             LoginResponse loginResponse = new LoginResponse();
             if (request != null) {
-                log("another user login REQUEST: " + request);
+                logger.userRequest(request.getUsername());
                 if ("john".equals(request.getUsername()) && "123".equals(request.getPassword())) {
                     loginResponse.setLogged(true);
                     loginResponse.setName("john");
-                    log("user logged in, will broadcast event");
+                    logger.userLoggedIn();
                     // broadcast this user's login event
                     broadcast(new UserLoginSuccessfulEvent(request.getUsername()));
                 }
             } else {
-                log("request is null");
+                logger.nullRequest();
             }
-            log("another user login RESPONSE: " + loginResponse);
+            logger.loginResponse(loginResponse.isLogged());
             // Send reply back to client
             responder.send(modelConverter.convert(loginResponse));
 

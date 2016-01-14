@@ -3,6 +3,7 @@ package com.lambstat.module.webserver.listener;
 import com.lambstat.core.endpoint.AbstractEndpointListener;
 import com.lambstat.core.endpoint.EndpointListener;
 import com.lambstat.core.service.Service;
+import com.lambstat.module.webserver.log.JettyEndpointLogger;
 import com.lambstat.module.webserver.resource.UserResource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -12,6 +13,7 @@ import org.glassfish.jersey.server.ServerProperties;
 
 public class JettyEndpointListener extends AbstractEndpointListener {
 
+    private JettyEndpointLogger logger = new JettyEndpointLogger();
     private Server jettyServer;
 
     public JettyEndpointListener(Service service) {
@@ -44,7 +46,7 @@ public class JettyEndpointListener extends AbstractEndpointListener {
             jettyServer.start();
             jettyServer.join();
         } catch (Exception e) {
-            log("Could not start/join jetty, exception: " + e.getMessage());
+            logger.couldNotStartJoin(e.getMessage());
         }
     }
 
@@ -53,7 +55,7 @@ public class JettyEndpointListener extends AbstractEndpointListener {
         try {
             jettyServer.stop();
         } catch (Exception e) {
-            log("Could not stop jetty, exception: " + e.getMessage());
+            logger.couldNotStop(e.getMessage());
         }
     }
 

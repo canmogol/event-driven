@@ -78,8 +78,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="9" language="java" name="com.lambstat.module.disc.event.WriteToDiscEvent" project="event-driven" 
-    file="/event-driven/src/main/java/com/lambstat/module/disc/event/WriteToDiscEvent.java" binary="false" 
+  <class id="9" language="java" name="com.lambstat.module.disk.event.WriteToDiskEvent" project="event-driven"
+    file="/event-driven/src/main/java/com/lambstat/module/disk/event/WriteToDiskEvent.java" binary="false"
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1243" y="557"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
