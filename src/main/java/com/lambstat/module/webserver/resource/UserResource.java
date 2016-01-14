@@ -43,6 +43,7 @@ public class UserResource extends BaseResource {
     @GET
     @Path("/logout")
     public LogoutResponse logout() {
+        logger.loggedOut();
         return new LogoutResponse(true);
     }
 

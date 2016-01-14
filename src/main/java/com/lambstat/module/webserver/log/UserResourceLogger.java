@@ -24,4 +24,8 @@ public class UserResourceLogger extends BaseLogger {
     public void willReturnLoginResponse(String username, boolean isLogged) {
         log("will return another login response, is user with username: " + username + " logged: " + isLogged);
     }
+
+    public void loggedOut() {
+        log("logout called");
+    }
 }
