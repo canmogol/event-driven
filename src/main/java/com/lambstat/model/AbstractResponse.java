@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class AbstractResponse implements Response {
 
     private Status status= Status.STATUS_OK;;
-    private String type = getClass().getSimpleName();;
+    private String type = getClass().getSimpleName();
 
     public AbstractResponse() {
     }

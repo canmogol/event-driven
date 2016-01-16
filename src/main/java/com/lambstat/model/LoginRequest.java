@@ -1,9 +1,7 @@
 package com.lambstat.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 
-@XmlSeeAlso(AbstractResponse.class)
 @XmlRootElement
 public class LoginRequest extends AbstractResponse {
 

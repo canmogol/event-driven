@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <configuration>
-    <services>com.lambstat.module.camera.service.CameraService</services>
-    <services>com.lambstat.module.disk.service.DiskService</services>
-    <services>com.lambstat.module.zmq.service.ZMQService</services>
-    <services>com.lambstat.module.webserver.service.WebServerService</services>
-    <webServer>com.lambstat.module.webserver.listener.JettyEndpointListener</webServer>
+    <services>com.lambstat.module.buildin.datastore.service.DataStoreService</services>
+    <services>com.lambstat.module.buildin.authorization.service.AuthorizationService</services>
+    <services>com.lambstat.module.buildin.authentication.service.AuthenticationService</services>
+    <services>com.lambstat.module.external.camera.service.CameraService</services>
+    <services>com.lambstat.module.external.disk.service.DiskService</services>
+    <services>com.lambstat.module.external.zmq.service.ZMQService</services>
+    <services>com.lambstat.module.external.webserver.service.WebServerService</services>
+    <webServer>com.lambstat.module.external.webserver.listener.JettyEndpointListener</webServer>
     <webServerPort>9088</webServerPort>
 </configuration>

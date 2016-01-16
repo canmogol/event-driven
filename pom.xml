@@ -166,7 +166,7 @@
                             <addResourceAndMethodIds>true</addResourceAndMethodIds>
                             <linkAnyMediaTypeToXmlSchema>true</linkAnyMediaTypeToXmlSchema>
                             <classResourceNames/>
-                            <basePackages>com.lambstat.module.webserver.resource</basePackages>
+                            <basePackages>com.lambstat.module.external.webserver.resource</basePackages>
                             <docProvider>org.apache.cxf.maven_plugin.javatowadl.ResourceMapJavaDocProvider</docProvider>
                             <attachWadl>true</attachWadl>
                             <outputFile>${project.build.directory}/classes/application.wadl</outputFile>

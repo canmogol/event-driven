@@ -2,7 +2,7 @@ package com.lambstat.test;
 
 import com.lambstat.core.event.Event;
 import com.lambstat.core.service.EventDispatcher;
-import com.lambstat.module.camera.event.CameraCaptureImageEvent;
+import com.lambstat.module.external.camera.event.CameraCaptureImageEvent;
 
 import java.util.Date;
 import java.util.logging.Logger;

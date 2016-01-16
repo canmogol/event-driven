@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.8" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
-  <interface id="1" language="java" name="com.lambstat.stat.event.Event" project="event-driven" 
+  <interface id="1" language="java" name="com.lambstat.stat.event.Event" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/stat/event/Event.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="555" y="431"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -10,7 +10,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="2" language="java" name="com.lambstat.stat.event.EventsRegisteredEvent" project="event-driven" 
+  <class id="2" language="java" name="com.lambstat.stat.event.EventsRegisteredEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/stat/event/EventsRegisteredEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="297" y="204"/>    
@@ -20,7 +20,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="com.lambstat.stat.event.EventsUnregisteredEvent" project="event-driven" 
+  <class id="3" language="java" name="com.lambstat.stat.event.EventsUnregisteredEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/stat/event/EventsUnregisteredEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="345" y="711"/>    
@@ -30,7 +30,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="com.lambstat.stat.event.ShutdownEvent" project="event-driven" 
+  <class id="4" language="java" name="com.lambstat.stat.event.ShutdownEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/stat/event/ShutdownEvent.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="572" y="74"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -39,7 +39,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="com.lambstat.stat.event.ShutdownImmediatelyEvent" project="event-driven" 
+  <class id="5" language="java" name="com.lambstat.stat.event.ShutdownImmediatelyEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/stat/event/ShutdownImmediatelyEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="845" y="95"/>    
@@ -49,7 +49,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="com.lambstat.module.zmq.event.ZMQFailEvent" project="event-driven" 
+  <class id="6" language="java" name="com.lambstat.module.external.zmq.event.ZMQFailEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/module/zmq/event/ZMQFailEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1245" y="316"/>    
@@ -59,7 +59,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="com.lambstat.module.zmq.event.ZMQSuccessEvent" project="event-driven" 
+  <class id="7" language="java" name="com.lambstat.module.external.zmq.event.ZMQSuccessEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/module/zmq/event/ZMQSuccessEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1058" y="212"/>    
@@ -69,7 +69,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="8" language="java" name="com.lambstat.stat.service.Service" project="event-driven" 
+  <interface id="8" language="java" name="com.lambstat.stat.service.Service" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/stat/service/Service.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="157" y="476"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -78,7 +78,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="9" language="java" name="com.lambstat.module.disk.event.WriteToDiskEvent" project="event-driven"
+  <class id="9" language="java" name="com.lambstat.module.external.disk.event.WriteToDiskEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/module/disk/event/WriteToDiskEvent.java" binary="false"
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1243" y="557"/>    
@@ -88,7 +88,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="com.lambstat.module.camera.event.CameraEvent" project="event-driven" 
+  <class id="10" language="java" name="com.lambstat.module.external.camera.event.CameraEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/module/camera/event/CameraEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="761" y="605"/>    
@@ -98,7 +98,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="com.lambstat.module.camera.event.CaptureImageEvent" project="event-driven" 
+  <class id="11" language="java" name="com.lambstat.module.external.camera.event.CaptureImageEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/module/camera/event/CaptureImageEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="958" y="859"/>    
@@ -108,7 +108,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="com.lambstat.module.camera.event.CaptureVideoEvent" project="event-driven" 
+  <class id="12" language="java" name="com.lambstat.module.external.camera.event.CaptureVideoEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/module/camera/event/CaptureVideoEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="664" y="829"/>    
@@ -118,7 +118,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="com.lambstat.module.camera.event.CameraCaptureImageEvent" project="event-driven"
+  <class id="13" language="java" name="com.lambstat.module.external.camera.event.CameraCaptureImageEvent" project="event-driven"
     file="/event-driven/src/main/java/com/lambstat/module/camera/event/CameraTestEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1173" y="771"/>    
@@ -166,7 +166,7 @@
   </dependency>  
   <association id="23">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="24" name="shutdownEvent"/>      
+      <attribute id="24" name="shutdownEvent"/>
       <multiplicity id="25" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
@@ -174,7 +174,7 @@
   </association>  
   <association id="26">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="27" name="service"/>      
+      <attribute id="27" name="service"/>
       <multiplicity id="28" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
@@ -190,7 +190,7 @@
   </generalization>  
   <association id="31">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="32" name="service"/>      
+      <attribute id="32" name="service"/>
       <multiplicity id="33" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
