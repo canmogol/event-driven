@@ -1,7 +1,7 @@
 package com.lambstat.module.external.webserver.resource;
 
 import com.lambstat.core.event.BaseEvent;
-import com.lambstat.model.ShutdownRequest;
+import com.lambstat.core.model.ShutdownRequest;
 import com.lambstat.module.external.camera.event.CameraCaptureImageEvent;
 import com.lambstat.module.external.disk.event.FileAvailableEvent;
 import com.lambstat.module.external.webserver.log.CameraResourceLogger;

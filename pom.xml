@@ -13,8 +13,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.generated.code.path>target/generated-sources/src/main/java</java.generated.code.path>
-        <java.package.name>com.lambstat.model</java.package.name>
-        <java.include.path.model>com/lambstat/model/*.java</java.include.path.model>
+        <java.package.name>com.lambstat.core.model</java.package.name>
+        <java.include.path.model>com/lambstat/core/model/*.java</java.include.path.model>
         <proto.file.path>src/main/resources/proto</proto.file.path>
         <proto.file.name>LambstatModels.proto</proto.file.name>
     </properties>

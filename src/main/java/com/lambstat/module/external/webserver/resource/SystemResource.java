@@ -1,9 +1,9 @@
 package com.lambstat.module.external.webserver.resource;
 
 import com.lambstat.core.event.ShutdownEvent;
-import com.lambstat.model.ShutdownRequest;
-import com.lambstat.model.ShutdownResponse;
-import com.lambstat.model.SystemStatus;
+import com.lambstat.core.model.ShutdownRequest;
+import com.lambstat.core.model.ShutdownResponse;
+import com.lambstat.core.model.SystemStatus;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;

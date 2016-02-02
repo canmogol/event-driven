@@ -1,6 +1,5 @@
 package com.lambstat.core.log;
 
-import java.util.Date;
 import java.util.logging.Logger;
 
 public class AbstractServiceLogger {
@@ -13,11 +12,11 @@ public class AbstractServiceLogger {
     }
 
     private void log(String log) {
-        L.info("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + serviceName + "] " + log);
+        L.info("[" + Thread.currentThread().getId() + "] [" + serviceName + "] " + log);
     }
 
     private void error(String log) {
-        L.severe("[" + new Date() + "] [" + Thread.currentThread().getId() + "] [" + serviceName + "] " + log);
+        L.severe("[" + Thread.currentThread().getId() + "] [" + serviceName + "] " + log);
     }
 
     public void genericEventFired(String baseEvent) {

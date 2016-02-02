@@ -1,6 +1,6 @@
 package com.lambstat.core.util;
 
-import com.lambstat.model.*;
+import com.lambstat.core.model.*;
 
 public class ModelConverter {
 

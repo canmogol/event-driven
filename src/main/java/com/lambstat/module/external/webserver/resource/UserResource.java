@@ -1,8 +1,8 @@
 package com.lambstat.module.external.webserver.resource;
 
-import com.lambstat.model.LoginRequest;
-import com.lambstat.model.LoginResponse;
-import com.lambstat.model.LogoutResponse;
+import com.lambstat.core.model.LoginRequest;
+import com.lambstat.core.model.LoginResponse;
+import com.lambstat.core.model.LogoutResponse;
 import com.lambstat.module.buildin.authentication.event.AuthenticationResponseEvent;
 import com.lambstat.module.external.webserver.log.UserResourceLogger;
 

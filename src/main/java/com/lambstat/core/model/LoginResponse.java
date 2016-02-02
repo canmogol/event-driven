@@ -1,4 +1,4 @@
-package com.lambstat.model;
+package com.lambstat.core.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

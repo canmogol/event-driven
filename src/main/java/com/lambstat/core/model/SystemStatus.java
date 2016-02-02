@@ -1,4 +1,4 @@
-package com.lambstat.model;
+package com.lambstat.core.model;
 
 public enum SystemStatus {
 
