@@ -141,7 +141,7 @@
                             </outputDirectory>
                         </LanguageSpecification>
                     </languageSpecifications>
-                    <protocExecutable>${project.basedir}/src/main/resources/proto/protoc</protocExecutable>
+                    <protocExecutable>/usr/local/bin/protoc</protocExecutable>
                 </configuration>
                 <executions>
                     <execution>
