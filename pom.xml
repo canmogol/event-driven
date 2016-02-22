@@ -141,7 +141,7 @@
                             </outputDirectory>
                         </LanguageSpecification>
                     </languageSpecifications>
-                    <protocExecutable>/usr/local/bin/protoc</protocExecutable>
+                    <protocExecutable>protoc</protocExecutable>
                 </configuration>
                 <executions>
                     <execution>
