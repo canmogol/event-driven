@@ -123,7 +123,7 @@
             <plugin>
                 <groupId>com.google.protobuf.tools</groupId>
                 <artifactId>maven-protoc-plugin</artifactId>
-                <version>0.1.12-SNAPSHOT</version>
+                <!-- <version>0.1.12-SNAPSHOT</version> -->
                 <configuration>
                     <protocExecutable>protoc</protocExecutable>
                     <protoSourceRoot>${project.basedir}/${proto.file.path}/</protoSourceRoot>
