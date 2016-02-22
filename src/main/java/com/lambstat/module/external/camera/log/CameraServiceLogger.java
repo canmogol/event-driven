@@ -8,11 +8,6 @@ public class CameraServiceLogger extends BaseLogger {
 
     private Logger logger = Logger.getLogger(getClass().getSimpleName());
 
-    @Override
-    protected Logger getLogger() {
-        return logger;
-    }
-
     public void willHandleImageCaptureEvent(String event) {
         log("CaptureImageEvent: " + event);
     }

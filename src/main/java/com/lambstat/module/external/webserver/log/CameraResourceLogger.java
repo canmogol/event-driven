@@ -8,11 +8,6 @@ public class CameraResourceLogger extends BaseLogger {
 
     private Logger logger = Logger.getLogger(getClass().getSimpleName());
 
-    @Override
-    protected Logger getLogger() {
-        return logger;
-    }
-
     public void futureExecutionError(String errorMessage) {
         error("execution exception while getting future, exception: " + errorMessage);
     }

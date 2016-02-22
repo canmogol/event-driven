@@ -6,13 +6,6 @@ import java.util.logging.Logger;
 
 public class UserResourceLogger extends BaseLogger {
 
-    private Logger logger = Logger.getLogger(getClass().getSimpleName());
-
-    @Override
-    protected Logger getLogger() {
-        return logger;
-    }
-
     public void anotherUserLoginRequest(String username) {
         log("another user login request: " + username);
     }

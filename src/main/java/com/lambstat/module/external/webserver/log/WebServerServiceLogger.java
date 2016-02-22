@@ -6,13 +6,6 @@ import java.util.logging.Logger;
 
 public class WebServerServiceLogger extends BaseLogger {
 
-    private Logger logger = Logger.getLogger(getClass().getSimpleName());
-
-    @Override
-    protected Logger getLogger() {
-        return logger;
-    }
-
     public void couldNotCreateClass(String className, String errorMessage) {
         error("Could not create class: " + className + " exception: " + errorMessage);
     }

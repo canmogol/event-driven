@@ -6,13 +6,6 @@ import java.util.logging.Logger;
 
 public class ZMQJavaSerializeLogger extends BaseLogger {
 
-    private Logger logger = Logger.getLogger(getClass().getSimpleName());
-
-    @Override
-    protected Logger getLogger() {
-        return logger;
-    }
-
     public void start() {
         log("starting context");
     }
